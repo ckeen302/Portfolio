@@ -21,7 +21,7 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/caden-keen-ck3/",
   },
   description:
-    "Caden Keen, Software Engineer. Computer Science senior at the University of Delaware. Projects: PokéIQ, a multiplayer Pokémon game platform, and ChordCraft, an AI chord progression generator.",
+    "Caden Keen, Software Engineer. Computer Science senior at the University of Delaware. Projects: PokéIQ, a multiplayer Pokémon game platform, ChordCraft, an AI chord progression generator, and Monster Hop, a browser game.",
 } as const;
 
 /** The links on the status card. */
@@ -34,7 +34,7 @@ export const socials = [
 /** Lines the dialog box types out, in order. Wrap a phrase in *asterisks* to highlight it. */
 export const dialog = [
   "Hi, I'm *Caden Keen*, a Computer Science senior at the *University of Delaware*, graduating *May 2027*. Based in Newark, DE. Looking for full-time software engineering roles after graduation.",
-  "Personal projects: *PokéIQ*, a multiplayer Pokémon game platform, and *ChordCraft*, an AI chord progression generator.",
+  "Personal projects: *PokéIQ*, a multiplayer Pokémon game platform, *ChordCraft*, an AI chord progression generator, and *Monster Hop*, a browser game.",
   "Experience: *MyBambino.com*, the University of Delaware's *Sage Infrastructure*, and *Domain Driven Solutions*.",
   "Outside of work, I'm a big *Washington Commanders* fan. I love producing music in *FL Studio* and traveling.",
 ] as const;
@@ -84,6 +84,23 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/ckeen302/ChordCraft" },
     ],
     host: "chord-craft-live.vercel.app",
+  },
+  {
+    id: "monsterhop",
+    index: "03",
+    name: "Monster Hop",
+    kind: "Browser Game",
+    stack: "Next.js, React, TypeScript, HTML5 Canvas, Tailwind CSS",
+    bullets: [
+      "Built an endless vertical platformer on HTML5 Canvas with its own game loop, physics and collision handling.",
+      "Designed four platform types, six power-ups, three kinds of enemy and black holes, across zones that get harder the higher you climb.",
+      "Added five playable monsters, keyboard and pointer controls with aimed shots, sound effects and a saved best score.",
+    ],
+    links: [
+      { label: "Live Site", href: "https://monster-hop-delta.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/ckeen302/MonsterHop" },
+    ],
+    host: "monster-hop-delta.vercel.app",
   },
 ];
 

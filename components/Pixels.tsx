@@ -18,11 +18,12 @@ import { getTheme, subscribeTheme } from "@/lib/theme";
  * They run at a low frame rate, pause off screen, and follow day / night.
  */
 
-export type PixelKind = "chordapp" | "pokeapp" | "ud" | "bambino" | "dds";
+export type PixelKind = "chordapp" | "pokeapp" | "hopapp" | "ud" | "bambino" | "dds";
 
 const SIZE: Record<PixelKind, [number, number]> = {
   chordapp: [192, 120],
   pokeapp: [192, 120],
+  hopapp: [192, 120],
   ud: [80, 56],
   bambino: [80, 56],
   dds: [80, 56],
@@ -30,6 +31,7 @@ const SIZE: Record<PixelKind, [number, number]> = {
 const LABEL: Record<PixelKind, string> = {
   chordapp: "A pixel-art version of ChordCraft: a prompt is typed, Generate is pressed, eight chords appear in the piano roll and play back.",
   pokeapp: "A pixel-art version of PokéIQ cycling through five tabs of the real site: a Pokédle solved in four guesses, a PokéGuessr round (a place, the map opened from the corner, a pin dropped, the result), a battle between Pikachu and Charizard, a Who's That Pokémon quiz, and the Pokédex scrolling slowly from Bulbasaur on.",
+  hopapp: "A pixel-art version of Monster Hop: a monster is picked on the menu, Play is pressed, and it bounces up from platform to platform, picking up a gem and shooting a flying enemy.",
   ud: "The University of Delaware logo, redrawn in pixels.",
   bambino: "The MyBambino logo, redrawn in pixels.",
   dds: "The Domain Driven Solutions logo, redrawn in pixels.",
@@ -621,7 +623,135 @@ const logo = (l: Logo): Draw => {
   };
 };
 
-const DRAW: Record<PixelKind, Draw> = { chordapp, pokeapp, ud: logo(UD), bambino: logo(BAMBINO), dds: logo(DDS) };
+/* Monster Hop, redrawn in pixels ----------------------------------------- */
+const LIME = "#9bd94a";
+const VIOLET = "#b98ad0";
+// Gloop, the first monster: one eye, an antenna, four little feet.
+const GLOOP = ["....g....", "....g....", "..ggggg..", ".ggggggg.", ".gg000gg.", ".gg0k0gg.", ".ggggggg.", ".ggggggg.", ".g.g.g.g."];
+const stampRows = (r: R, rows: string[], x: number, y: number, ink: Record<string, string | number>) =>
+  rows.forEach((line, j) => {
+    for (let i = 0; i < line.length; i++) if (line[i] !== ".") r(x + i, y + j, 1, 1, ink[line[i]]);
+  });
+const GLOOP_INK = { g: LIME, "0": 0, k: "k" };
+// The five monsters on the menu, as the colour of each.
+const AVATARS = [LIME, VIOLET, "o", "s", 0];
+const HOP = 0.62; // seconds from one platform to the next
+const RISE = 15; // how much higher each platform is
+const ledgeX = (k: number) => 24 + Math.floor(hash(k * 3 + 1) * 130);
+const hopapp: Draw = (r, t, tick) => {
+  const a = t % 13;
+  // the dusk sky, with a few fireflies
+  r(0, 0, 192, 120, 3);
+  for (let y = 60; y < 120; y += 2) for (let x = (y / 2) % 2; x < 192; x += Math.max(2, Math.floor((126 - y) / 8))) r(x, y, 1, 1, 2);
+  for (let i = 0; i < 14; i++) if (hash(i * 5 + Math.floor(t * 1.2)) > 0.3) r(Math.floor(hash(i) * 190), Math.floor(hash(i + 30) * 100), 1, 1, i % 3 ? 0 : "y");
+
+  const playing = a >= 2.4;
+  const g = playing ? a - 2.4 : 0; // seconds into the run
+  const k = Math.floor(g / HOP); // the platform it last bounced off
+  const u = (g % HOP) / HOP;
+  const cam = (k + ease(u)) * RISE; // how far the view has climbed
+  const toY = (h: number) => 96 - (h - cam);
+
+  // the hills it starts from, left behind as it climbs
+  const ground = 104 + Math.round(cam);
+  if (ground < 120) {
+    for (let x = 0; x < 192; x++) r(x, ground + Math.round(4 * Math.sin(x / 22) + 2 * Math.sin(x / 9 + 1)), 1, 120, "k");
+    [30, 118, 150].forEach((x) => {
+      r(x, ground - 7, 1, 8, "k");
+      r(x - 1, ground - 4, 3, 4, "k");
+      r(x - 2, ground - 1, 5, 2, "k");
+    });
+  }
+  // platforms: the ones it uses, and others either side
+  for (let j = k - 2; j < k + 9; j++) {
+    if (j < 0) continue;
+    const y = toY(j * RISE);
+    const bounced = playing && j === k && u < 0.25 ? 1 : 0;
+    r(ledgeX(j), y + bounced, 16, 3, GREEN);
+    r(ledgeX(j) + 1, y + bounced, 14, 1, 0);
+    const other = 8 + Math.floor(hash(j * 7 + 4) * 160);
+    if (Math.abs(other - ledgeX(j)) > 22) {
+      r(other, y - 7, 16, 3, GREEN);
+      r(other + 1, y - 7, 14, 1, 0);
+    }
+  }
+  // a gem to pick up on the fourth platform, and a flying enemy over the eighth
+  if (k < 4) {
+    const y = toY(4 * RISE) - 7 - (tick % 4 < 2 ? 1 : 0);
+    r(ledgeX(4) + 7, y, 3, 5, "y");
+    r(ledgeX(4) + 6, y + 1, 5, 3, "y");
+    r(ledgeX(4) + 7, y + 1, 1, 1, 0);
+  }
+  const foeY = toY(8 * RISE) - 16;
+  const foeX = ledgeX(8) + 4 + Math.round(10 * Math.sin(t * 2));
+  const shotAt = 6.2 * HOP; // when it fires, and the shot takes a third of a second to land
+  if (g < shotAt + 0.33) {
+    const flap = tick % 4 < 2 ? 0 : 2;
+    r(foeX, foeY, 9, 6, VIOLET);
+    r(foeX - 4, foeY + flap, 4, 2, VIOLET);
+    r(foeX + 9, foeY + flap, 4, 2, VIOLET);
+    r(foeX + 2, foeY + 2, 2, 2, 0);
+    r(foeX + 5, foeY + 2, 2, 2, 0);
+    r(foeX + 2, foeY - 1, 1, 1, VIOLET);
+    r(foeX + 6, foeY - 1, 1, 1, VIOLET);
+  } else if (g < shotAt + 0.75) spark(r, foeX + 4, foeY + 3);
+
+  // the monster: across and up to the next platform in an arc
+  const mx = playing ? lerp(ledgeX(k), ledgeX(k + 1), ease(u)) + 4 : 92;
+  const my = playing ? toY(k * RISE + RISE * u + 17 * Math.sin(Math.PI * u)) - 9 : 87 - Math.round(3 * Math.abs(Math.sin(t * 4)));
+  if (playing && g >= shotAt && g < shotAt + 0.33) {
+    const p = (g - shotAt) / 0.33;
+    r(lerp(mx + 4, foeX + 4, p), lerp(my, foeY + 6, p), 2, 3, "y");
+  }
+  stampRows(r, GLOOP, mx, my, GLOOP_INK);
+
+  if (playing) {
+    // the score, the zone it is in, and what it has just earned
+    const score = k * 10 + (k >= 4 ? 50 : 0) + (g >= shotAt + 0.33 ? 150 : 0);
+    r(3, 3, 72, 16, "k");
+    text(r, String(score), 6, 5, 0);
+    text(r, `${k * 2} M DUSK MEADOW`, 6, 12, 2);
+    r(172, 3, 7, 7, "k");
+    r(182, 3, 7, 7, "k");
+    r(184, 5, 1, 3, 0);
+    r(186, 5, 1, 3, 0);
+    r(174, 5, 2, 3, 0);
+    if (g < 1.8) {
+      text(r, "ZONE 1", 96 - Math.floor(width("ZONE 1") / 2), 30, 2);
+      text(r, "DUSK MEADOW", 96 - Math.floor(width("DUSK MEADOW") / 2), 38, GREEN);
+    }
+    const gemAt = 4 * HOP;
+    if (g >= gemAt && g < gemAt + 0.8) text(r, "+50", mx - 2, my - 8 - Math.round((g - gemAt) * 8), "y");
+    if (g >= shotAt + 0.33 && g < shotAt + 1.2) text(r, "+150", foeX - 2, foeY - 6 - Math.round((g - shotAt) * 6), "y");
+  } else {
+    // the menu: the name, the monster picked, the five to choose from, and Play
+    r(52, 8, 88, 104, "k");
+    frame(r, 52, 8, 88, 104, 2);
+    text(r, "MONSTER", 64, 14, GREEN);
+    text(r, "HOP", 96, 14, 0);
+    text(r, "BOUNCE THROUGH", 68, 23, 2);
+    text(r, "THE NIGHT", 78, 30, 2);
+    r(58, 39, 76, 22, 3);
+    stampRows(r, GLOOP, 63, 45 - (tick % 8 < 4 ? 1 : 0), GLOOP_INK);
+    text(r, "YOUR MONSTER", 78, 43, 2);
+    text(r, "GLOOP", 78, 51, GREEN);
+    AVATARS.forEach((ink, i) => {
+      const x = 59 + i * 15;
+      r(x, 65, 13, 13, 3);
+      if (i === 0) frame(r, x, 65, 13, 13, GREEN);
+      r(x + 3, 68, 7, 7, ink);
+      r(x + 5, 70, 1, 2, "k");
+      r(x + 8, 70, 1, 2, "k");
+    });
+    const pressed = a >= 1.9;
+    r(58, 83, 76, 13, pressed ? "y" : GREEN);
+    text(r, "PLAY", 89, 87, "k");
+    text(r, "NO BEST YET", 74, 101, 2);
+    if (a > 0.8) pointer(r, lerp(150, 100, ease((a - 0.8) / 0.8)), lerp(60, 90, ease((a - 0.8) / 0.8)));
+  }
+};
+
+const DRAW: Record<PixelKind, Draw> = { chordapp, pokeapp, hopapp, ud: logo(UD), bambino: logo(BAMBINO), dds: logo(DDS) };
 
 export function Pixels({ kind, className }: { kind: PixelKind; className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);

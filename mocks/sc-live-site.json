@@ -1,0 +1,3 @@
+{ "url": "https://ckeen302.github.io/Portfolio/", "prep": "document.documentElement.dataset.boot='off'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in'));",
+  "steps": [ { "at": 1200, "js": "document.documentElement.style.scrollBehavior='auto'; window.scrollTo(0, document.querySelector('#work').getBoundingClientRect().top + scrollY - 80)" } ],
+  "every": 1500, "until": 2600, "cols": 2, "settle": 5000 }

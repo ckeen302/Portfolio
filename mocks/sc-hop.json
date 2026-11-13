@@ -1,0 +1,2 @@
+{ "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme==='night') (document.querySelector('.top .chip--icon')||{click(){}}).click(); window.scrollTo(0, document.querySelector('#monsterhop').getBoundingClientRect().top + scrollY - 90)",
+  "clip": [120, 80, 1200, 470], "every": 900, "until": 11000, "cols": 4, "settle": 2500 }

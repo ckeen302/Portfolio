@@ -4,7 +4,9 @@ import { PlayChords } from "./PlayChords";
 import { PxOut } from "./Px";
 
 // Each project is shown as a pixel-art version of itself, drawn for this site.
-const SCREEN: Record<string, PixelKind> = { chordcraft: "chordapp", pokeiq: "pokeapp" };
+const SCREEN: Record<string, PixelKind> = { chordcraft: "chordapp", pokeiq: "pokeapp", monsterhop: "hopapp" };
+// Where the cat sits on a project's screen, for the ones it visits.
+const CAT: Record<string, string> = { chordcraft: "bat", pokeiq: "watch" };
 
 function Card({ p }: { p: Project }) {
   return (
@@ -33,7 +35,7 @@ function Card({ p }: { p: Project }) {
           </p>
         </div>
 
-        <figure className="screen" data-cat={p.id === "chordcraft" ? "bat" : "watch"}>
+        <figure className="screen" data-cat={CAT[p.id]}>
           <a className="screen__glass" href={p.links[0].href} target="_blank" rel="noopener" aria-label={`Open the real ${p.name}`}>
             <Pixels kind={SCREEN[p.id]} />
           </a>
