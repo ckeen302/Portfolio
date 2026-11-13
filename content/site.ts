@@ -92,7 +92,7 @@ export const projects: Project[] = [
     kind: "Browser Game",
     stack: "Next.js, React, TypeScript, HTML5 Canvas, Tailwind CSS",
     bullets: [
-      "Built an endless vertical platformer on HTML5 Canvas with its own game loop, physics and collision handling.",
+      "Built an endless vertical platformer inspired by Doodle Jump, a childhood favorite, on HTML5 Canvas with its own game loop, physics and collision handling.",
       "Designed four platform types, six power-ups, three kinds of enemy and black holes, across zones that get harder the higher you climb.",
       "Added five playable monsters, keyboard and pointer controls with aimed shots, sound effects and a saved best score.",
     ],
