@@ -146,7 +146,8 @@ export function Mascot() {
         case "badge": {
           const logo = s.el.querySelector("canvas")?.getBoundingClientRect();
           // right under the dragonfly's lower wing, so the raised paw comes up to it
-          return logo && logo.width ? [logo.left + (logo.width * 67) / 80 + 7 * S + sx, logo.top + (logo.height * 51) / 56 + sy] : null;
+          // (on phones the cat is smaller and would stand on the banner's lettering, so it stands just past the logo)
+          return logo && logo.width ? [(S === 3 ? logo.right + 6 * S : logo.left + (logo.width * 67) / 80 + 7 * S) + sx, logo.top + (logo.height * 51) / 56 + sy] : null;
         }
         case "peek":
           return [r.right - 13 * S + sx, r.top + sy];
@@ -157,7 +158,7 @@ export function Mascot() {
     /** Where the logo's banner ends at the cat's height: the cat is hidden to the left of this. */
     const badgeEdge = (s: Spot) => {
       const logo = s.el.querySelector("canvas")?.getBoundingClientRect();
-      return logo ? logo.left + logo.width * 0.78 + window.scrollX : 0;
+      return logo ? (size() === 3 ? logo.right - size() : logo.left + logo.width * 0.78) + window.scrollX : 0;
     };
     /** How tall the cat is in a spot, in cat pixels. */
     const tall = (s: Spot) => (s.pose === "peek" ? 7 : s.pose === "sleep" || s.pose === "bat" ? 12 : 16);
@@ -277,14 +278,14 @@ export function Mascot() {
         if (spot.pose === "peek") list.push({ kind: "duck", ms: 180 });
         else if (spot.pose === "badge") {
           list.push({ kind: "turn", ms: 200, at: feet, pose: spot.pose, arriving: false, flip: -1 });
-          list.push({ kind: "slip", ms: 560, from: feet, to: [feet[0] - 13 * S, feet[1]], edge: badgeEdge(spot) });
+          list.push({ kind: "slip", ms: 560, from: feet, to: [feet[0] - 16 * S, feet[1]], edge: badgeEdge(spot) });
         } else list.push({ kind: "sink", ms: 420, at: feet, pose: spot.pose });
       }
       if (to) {
         const at = placeOf(to);
         if (!at) return;
         if (to.pose === "badge") {
-          list.push({ kind: "slip", ms: 640, from: [at[0] - 13 * S, at[1]], to: at, edge: badgeEdge(to) });
+          list.push({ kind: "slip", ms: 640, from: [at[0] - 16 * S, at[1]], to: at, edge: badgeEdge(to) });
           list.push({ kind: "turn", ms: 200, at, pose: to.pose, arriving: true, flip: 1 });
         } else if (to.pose !== "peek") list.push({ kind: "rise", ms: 620, at, pose: to.pose });
         // (the peeking cat comes up by itself once it has "arrived")

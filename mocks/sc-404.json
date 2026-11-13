@@ -1,0 +1,1 @@
+{"url": "http://localhost:3210/nope", "prep": "sessionStorage.setItem('ck-theme','night'); sessionStorage.setItem('ck-boot','1'); location.reload()", "clip": [320, 60, 800, 780], "every": 2500, "until": 5200, "cols": 3, "settle": 3000}

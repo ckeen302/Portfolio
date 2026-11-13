@@ -762,7 +762,11 @@ export function Pixels({ kind, className }: { kind: PixelKind; className?: strin
     const g = cv?.getContext("2d");
     if (!cv || !g) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let P: Pal = getTheme() === "night" ? NIGHT : DAY;
+    // The three project screens carry small grey text; at night the room's dark greys would lose it
+    // against the screen, so on those screens the two greys (and the sky and wall-dot colours) are lifted.
+    const app = kind === "chordapp" || kind === "pokeapp" || kind === "hopapp";
+    const pick = (): Pal => (getTheme() !== "night" ? DAY : app ? { ...NIGHT, 1: "#6f8ea6", 2: "#48647c", d: "#8fa9bd", s: "#5a9ab3" } : NIGHT);
+    let P: Pal = pick();
     const r = (x: number, y: number, bw: number, bh: number, c: string | number) => {
       g.fillStyle = P[c] ?? String(c); // palette key, or a sprite's own colour
       g.fillRect(x, y, bw, bh);
@@ -801,7 +805,7 @@ export function Pixels({ kind, className }: { kind: PixelKind; className?: strin
     });
     io.observe(cv);
     const off = subscribeTheme(() => {
-      P = getTheme() === "night" ? NIGHT : DAY;
+      P = pick();
       paint(clock || 4.4);
     });
     document.addEventListener("visibilitychange", sync);

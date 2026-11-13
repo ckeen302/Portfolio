@@ -1262,6 +1262,47 @@ html:not([data-boot="off"]) .hero .menu {
   animation-delay: 0.86s;
 }
 
+/* Page not found ---------------------------------------------------------- */
+
+.lost {
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: 40px 20px;
+}
+.lost__box {
+  width: min(560px, 100%);
+}
+.lost__box > .in {
+  display: grid;
+  justify-items: center;
+  padding: 48px 28px 44px;
+  text-align: center;
+}
+.lost__cat {
+  width: 150px;
+  height: auto;
+  image-rendering: pixelated;
+}
+.lost__code {
+  margin-top: 6px;
+  font: 700 clamp(64px, 16vw, 112px) / 1 var(--title);
+  color: var(--or);
+}
+.lost h1 {
+  margin-top: 10px;
+  font: 700 clamp(20px, 4vw, 30px) / 1.1 var(--title);
+  text-transform: uppercase;
+}
+.lost__text {
+  margin-top: 10px;
+  font-size: 26px;
+  color: var(--mut);
+}
+.lost .btns {
+  justify-content: center;
+}
+
 /* 9. Motion & small screens ---------------------------------------------- */
 
 /* Everything moves in a few hard steps, never a smooth glide. */
@@ -1416,8 +1457,18 @@ html:not([data-boot="off"]) .hero .menu {
   .menu li a {
     font-size: 22px;
   }
+  .plate:not(.plate--hint) {
+    left: 8px;
+    top: 8px;
+  }
   .plate {
-    font-size: 12px;
+    gap: 6px;
+    padding: 3px 6px 4px;
+    font-size: 9px;
+  }
+  .plate svg {
+    width: auto;
+    height: 9px;
   }
   .plate--hint {
     font-size: 10px;
