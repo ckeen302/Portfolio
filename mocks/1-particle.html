@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option 1 — Particle</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:1440px;height:900px;background:#030305;color:#eef2f8;overflow:hidden;font-family:"Inter Tight",sans-serif}
+  canvas{position:absolute;inset:0;width:1440px;height:900px}
+  .vig{position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 46%,transparent 40%,rgba(0,0,0,.75) 100%)}
+  .mono{font:500 12px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase}
+  .nav{position:absolute;top:30px;left:48px;right:48px;display:flex;justify-content:space-between;align-items:center}
+  .nav b{font:700 15px "Unbounded";letter-spacing:.02em}
+  .nav ul{display:flex;gap:40px;list-style:none;margin:0;padding:0;color:#9aa3b5}
+  .nav ul li:first-child{color:#fff}
+  .pill{border:1px solid rgba(255,255,255,.28);padding:11px 18px;border-radius:999px;color:#fff}
+  .cap{position:absolute;left:0;right:0;top:598px;text-align:center;color:#8d98ad}
+  .cap i{font-style:normal;color:#5f8bff;margin:0 14px}
+  .lede{position:absolute;left:48px;bottom:46px;width:520px;font:500 27px/1.22 "Inter Tight";letter-spacing:-.02em;color:#f3f5fa}
+  .lede span{color:#7f8aa0}
+  .br{position:absolute;right:48px;bottom:46px;text-align:right;color:#8d98ad;line-height:2}
+  .br b{color:#fff;font-weight:500}
+  .side{position:absolute;left:48px;top:50%;transform:rotate(-90deg) translate(-50%,0);transform-origin:0 0;color:#5d6679}
+  .ring{position:absolute;width:112px;height:112px;border-radius:50%;border:1px solid rgba(120,160,255,.55);left:762px;top:428px;box-shadow:0 0 40px rgba(80,120,255,.25) inset}
+  .ring::after{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:#fff}
+</style>
+</head>
+<body>
+<canvas id="c" width="2880" height="1800"></canvas>
+<div class="vig"></div>
+<div class="ring"></div>
+<div class="nav mono"><b>CK</b><ul><li>Work</li><li>Experience</li><li>About</li><li>Contact</li></ul><span class="pill">Résumé ↗</span></div>
+<p class="cap mono">Full-stack <i>/</i> Machine learning <i>/</i> Real-time systems</p>
+<p class="lede">Software engineer. <span>I train the model, write the API, design the screen, and ship it.</span></p>
+<p class="br mono"><b>41,280 particles</b><br>Move your cursor · Scroll ↓</p>
+<p class="side mono">Portfolio — 2026</p>
+<script>
+(async () => {
+  await document.fonts.load('800 200px Unbounded');
+  await document.fonts.ready;
+  const W = 2880, H = 1800, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+  const off = document.createElement('canvas'); off.width = W; off.height = H;
+  const o = off.getContext('2d');
+  let size = 300; o.font = `800 ${size}px Unbounded`;
+  const text = 'CADEN KEEN';
+  size *= 2560 / o.measureText(text).width; o.font = `800 ${size}px Unbounded`;
+  o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillStyle = '#fff';
+  o.fillText(text, W / 2, 880);
+  const img = o.getImageData(0, 0, W, H).data;
+
+  // soft glow under the letters
+  ctx.filter = 'blur(70px)'; ctx.globalAlpha = .5; ctx.fillStyle = '#2f55ff';
+  ctx.font = o.font; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, W / 2, 880);
+  ctx.filter = 'none'; ctx.globalAlpha = 1;
+
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  ctx.globalCompositeOperation = 'lighter';
+  // background dust
+  for (let i = 0; i < 1400; i++) { ctx.fillStyle = `rgba(150,180,255,${.05 + rnd() * .22})`; ctx.beginPath(); ctx.arc(rnd() * W, rnd() * H, .6 + rnd() * 1.6, 0, 7); ctx.fill(); }
+
+  const cx = 818 * 2, cy = 484 * 2, R = 150;           // where the cursor is
+  const x0 = (W - 2560) / 2;
+  for (let y = 560; y < 1200; y += 3) for (let x = 100; x < W - 100; x += 3) {
+    if (img[(y * W + x) * 4 + 3] < 128) continue;
+    let px = x + (rnd() - .5) * 2.4, py = y + (rnd() - .5) * 2.4, a = .55 + rnd() * .45, r = .9 + rnd() * 1.1;
+    const u = (x - x0) / 2560;
+    // the last letter is blowing away
+    const t = Math.max(0, (u - .86) / .14);
+    if (t > 0 && rnd() < .25 + t * .6) { const k = t * t * (0.4 + rnd() * 1.6); px += k * (220 + rnd() * 520); py -= k * (60 + rnd() * 520) - (rnd() - .5) * 90 * t; a *= 1 - Math.min(.8, k * .5); r *= .9; }
+    // the cursor pushes particles out of the way
+    const dx = px - cx, dy = py - cy, d = Math.hypot(dx, dy);
+    if (d < R) { const f = (1 - d / R); const push = f * f * 120 + f * 34; px += dx / (d + .01) * push; py += dy / (d + .01) * push; a = Math.min(1, a + .3); }
+    const mix = Math.min(1, Math.max(0, u * 1.05));
+    const cr = Math.round(255 - mix * 150), cg = Math.round(255 - mix * 95), cb = 255;
+    ctx.fillStyle = `rgba(${cr},${cg},${cb},${a})`;
+    ctx.beginPath(); ctx.arc(px, py, r, 0, 7); ctx.fill();
+  }
+  document.title = 'done';
+})();
+</script>
+</body>
+</html>

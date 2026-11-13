@@ -1,0 +1,9 @@
+{ "prep": "document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme!=='night') (document.querySelector('.top .chip--icon')||{click(){}}).click(); window.__ev=(type,x,y)=>{const c=document.querySelector('.scene canvas');const b=c.getBoundingClientRect();c.dispatchEvent(new PointerEvent(type,{bubbles:true,clientX:b.left+b.width*x/164,clientY:b.top+b.height*y/96}));}",
+  "steps": [
+    { "at": 500, "js": "__ev('pointermove',95,30)" },
+    { "at": 1500, "js": "__ev('pointermove',58,15)" },
+    { "at": 2500, "js": "__ev('pointermove',157,60); __ev('pointerdown',157,61)" },
+    { "at": 3500, "js": "__ev('pointermove',134,50); __ev('pointerdown',134,50)" },
+    { "at": 4600, "js": "__ev('pointermove',58,45)" }
+  ],
+  "clip": [560, 110, 860, 500], "every": 520, "until": 5400, "cols": 5, "settle": 2500 }

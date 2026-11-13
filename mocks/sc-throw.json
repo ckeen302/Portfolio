@@ -1,0 +1,2 @@
+{ "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme==='night') (document.querySelector('.top .chip--icon')||{click(){}}).click(); window.scrollTo(0, document.querySelector('#pokeiq .screen').getBoundingClientRect().top + scrollY - 330)",
+  "clip": [690, 200, 660, 200], "every": 170, "until": 8200, "cols": 5, "settle": 2500 }

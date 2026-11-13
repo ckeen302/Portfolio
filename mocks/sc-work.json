@@ -1,0 +1,9 @@
+{
+  "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off';",
+  "steps": [{ "at": 0, "js": "window.scrollTo(0, document.querySelector('#chordcraft .screen').getBoundingClientRect().top + scrollY - 330)" }],
+  "clip": [700, 100, 740, 300],
+  "scale": 0.5,
+  "every": 70,
+  "until": 2400,
+  "cols": 6
+}

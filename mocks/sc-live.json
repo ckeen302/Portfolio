@@ -1,0 +1,2 @@
+{ "prep": "document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme==='night') (document.querySelector('.top .chip--icon')||{click(){}}).click();",
+  "clip": [560, 110, 860, 500], "every": 1500, "until": 3200, "cols": 3, "settle": 4000 }

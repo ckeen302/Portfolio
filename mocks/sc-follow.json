@@ -1,0 +1,7 @@
+{ "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off';; window.scrollTo(0, 560)",
+  "settle": 2500,
+  "steps": [
+    { "at": 1500, "js": "window.__sc = setInterval(() => { document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); window.scrollBy(0, 4); }, 16)" },
+    { "at": 19000, "js": "clearInterval(window.__sc)" }
+  ],
+  "track": true, "clip": [0, 0, 420, 300], "every": 230, "until": 20500, "cols": 10 }

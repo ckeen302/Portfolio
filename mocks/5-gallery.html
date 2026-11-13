@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option 5 — Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f5f5f6;--ink:#0c0c0d;--mute:#74747a;--blue:#2b59ff}
+  html,body{margin:0;width:1440px;height:900px;background:var(--bg);color:var(--ink);overflow:hidden;font-family:"Inter Tight",sans-serif}
+  .mono{font:500 12px "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+  .nav{position:absolute;top:30px;left:48px;right:48px;display:flex;justify-content:space-between;align-items:center;font:500 17px "Inter Tight";letter-spacing:-.01em}
+  .nav b{font-weight:600}
+  .nav ul{display:flex;gap:36px;list-style:none;margin:0;padding:0}
+  .nav .pill{background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:15px}
+  .status{position:absolute;left:48px;top:138px;display:flex;align-items:center;gap:10px;color:var(--mute)}
+  .status i{width:8px;height:8px;border-radius:50%;background:#19c463}
+  h1{position:absolute;left:48px;top:172px;width:640px;margin:0;font:600 79px/.98 "Inter Tight";letter-spacing:-.048em}
+  h1 em{font-style:normal;color:var(--blue)}
+  .lede{position:absolute;left:48px;top:488px;width:440px;font:400 19px/1.45 "Inter Tight";color:#45454a;letter-spacing:-.01em}
+  .cta{position:absolute;left:48px;top:604px;display:flex;gap:12px;font:600 16px "Inter Tight"}
+  .cta span{padding:16px 26px;border-radius:999px;border:1.5px solid var(--ink)}
+  .cta span:first-child{background:var(--ink);color:#fff}
+  .stage{position:absolute;right:48px;top:112px;width:660px;height:548px;border-radius:30px;background:var(--blue);overflow:hidden}
+  .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 80% 10%,rgba(255,255,255,.28),transparent 60%)}
+  .win{position:absolute;border-radius:14px;overflow:hidden;background:#0c0c11;box-shadow:0 40px 70px -20px rgba(4,12,60,.65)}
+  .win i{display:flex;gap:6px;align-items:center;height:28px;padding:0 12px;background:#17171d}
+  .win i b{width:8px;height:8px;border-radius:50%;background:#3a3a44}
+  .win img{display:block;width:100%}
+  .w1{left:58px;top:58px;width:560px;transform:rotate(-3deg)}
+  .w2{left:300px;top:300px;width:330px;transform:rotate(5deg)}
+  .dot{position:absolute;right:92px;top:560px;width:124px;height:124px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:600 15px "Inter Tight";box-shadow:0 20px 40px -12px rgba(0,0,0,.5)}
+  .tag{position:absolute;right:728px;top:618px;color:var(--mute);text-align:right;line-height:1.9}
+  .tag b{color:var(--ink);font-weight:500}
+  .rule{position:absolute;left:48px;right:48px;top:700px;height:1px;background:rgba(12,12,13,.16)}
+  .name{position:absolute;left:-24px;top:694px;white-space:nowrap;font:600 232px/1 "Inter Tight";letter-spacing:-.062em}
+  .name span{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="nav"><b>Caden Keen</b><ul><li>Work</li><li>Experience</li><li>About</li><li>Contact</li></ul><span class="pill">Résumé ↗</span></div>
+<p class="status mono"><i></i>Open to work · Class of 2027 · Newark, DE</p>
+<h1>I build software end to end: the <em>model</em>, the API and the screen.</h1>
+<p class="lede">Software engineer and CS senior at the University of Delaware. I trained an AI model that runs in your browser and built a real-time multiplayer game platform.</p>
+<div class="cta"><span>See the work ↓</span><span>Get in touch</span></div>
+<div class="stage">
+  <div class="win w1"><i><b></b><b></b><b></b></i><img src="../public/work/pokeiq/home.webp" alt=""></div>
+  <div class="win w2"><i><b></b><b></b><b></b></i><img src="../public/work/chordcraft/demo.gif" alt=""></div>
+</div>
+<div class="dot">View ↗</div>
+<p class="tag mono"><b>01</b> ChordCraft<br><b>02</b> PokéIQ</p>
+<div class="rule"></div>
+<div class="name">Caden Keen <span>—</span> Caden Keen</div>
+</body>
+</html>

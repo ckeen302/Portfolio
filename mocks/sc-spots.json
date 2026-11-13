@@ -1,0 +1,11 @@
+{ "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off'; window.__to = (sel, off) => window.scrollTo(0, document.querySelector(sel).getBoundingClientRect().top + scrollY - off);",
+  "steps": [
+    { "at": 0, "js": "window.__to('#work-title', 430)" },
+    { "at": 3300, "js": "window.__to('#chordcraft .screen', 250)" },
+    { "at": 6600, "js": "window.__to('#pokeiq .screen', 300)" },
+    { "at": 9900, "js": "window.__to('#sage', 260)" },
+    { "at": 13200, "js": "window.__to('.slots', 400)" },
+    { "at": 16500, "js": "window.__to('.mail', 420)" },
+    { "at": 19800, "js": "window.scrollTo(0, 0)" }
+  ],
+  "track": true, "clip": [0, 0, 380, 270], "every": 215, "until": 21500, "cols": 10 }

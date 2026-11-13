@@ -1,0 +1,2 @@
+{ "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme==='night') (document.querySelector('.top .chip--icon')||{click(){}}).click(); window.scrollTo(0, document.querySelector('.mail').getBoundingClientRect().top + scrollY - 420)",
+  "clip": [120, 320, 860, 130], "every": 240, "until": 12500, "cols": 4, "settle": 2500 }

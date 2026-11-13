@@ -1,0 +1,10 @@
+{
+  "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off';",
+  "steps": [
+    { "at": 0, "js": "window.__sc = setInterval(() => { document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); window.scrollBy(0, 5); }, 16)" },
+    { "at": 9000, "js": "clearInterval(window.__sc)" }
+  ],
+  "every": 190,
+  "until": 9800,
+  "cols": 7
+}

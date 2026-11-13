@@ -1,0 +1,4 @@
+{ "prep": "document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-in')); document.documentElement.dataset.boot='off';; window.scrollTo(0, document.querySelector('#work-title').getBoundingClientRect().top + scrollY - 420)",
+  "settle": 2500,
+  "steps": [{ "at": 1800, "js": "window.scrollBy(0, 330)" }],
+  "clip": [0, 70, 1440, 560], "every": 110, "until": 5600, "cols": 5 }

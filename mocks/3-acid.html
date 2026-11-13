@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option 3 — Acid</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--acid:#c9ff2f;--ink:#0b0b0b;--hot:#ff3d1f}
+  html,body{margin:0;width:1440px;height:900px;background:var(--acid);color:var(--ink);overflow:hidden;font-family:"Archivo",sans-serif}
+  .mono{font:700 13px "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+  .top{position:absolute;inset:0 0 auto 0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;border-bottom:3px solid var(--ink)}
+  .top b{font:900 22px "Archivo";font-stretch:125%;letter-spacing:-.02em}
+  .top ul{display:flex;gap:38px;list-style:none;margin:0;padding:0}
+  .btn{background:var(--ink);color:var(--acid);padding:12px 20px;border-radius:999px}
+  h1{position:absolute;left:30px;top:92px;margin:0;font:900 262px/.8 "Archivo";font-stretch:125%;letter-spacing:-.055em;text-transform:uppercase}
+  h1 span{display:block}
+  .card{position:absolute;border:4px solid var(--ink);border-radius:14px;overflow:hidden;background:#0c0c11;box-shadow:12px 12px 0 var(--ink)}
+  .card img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+  .card small{position:absolute;left:0;bottom:0;background:var(--ink);color:var(--acid);padding:7px 12px;font:700 12px "Space Mono";letter-spacing:.06em;text-transform:uppercase}
+  .c1{right:44px;top:104px;width:404px;height:254px;transform:rotate(5deg)}
+  .c2{right:214px;top:336px;width:372px;height:236px;transform:rotate(-6deg)}
+  .sticker{position:absolute;right:48px;top:424px;width:184px;height:184px}
+  .lede{position:absolute;left:36px;bottom:104px;width:560px;font:600 25px/1.2 "Archivo";letter-spacing:-.02em}
+  .cta{position:absolute;left:630px;bottom:104px;display:flex;gap:12px}
+  .cta span{padding:16px 24px;border:3px solid var(--ink);border-radius:999px}
+  .cta span:first-child{background:var(--ink);color:var(--acid)}
+  .rows{position:absolute;right:36px;bottom:100px;width:330px;border-top:3px solid var(--ink)}
+  .rows p{display:flex;justify-content:space-between;margin:0;padding:9px 0;border-bottom:3px solid var(--ink)}
+  .bar{position:absolute;inset:auto 0 0 0;height:66px;background:var(--ink);color:var(--acid);display:flex;align-items:center;gap:34px;white-space:nowrap;font:900 30px "Archivo";font-stretch:125%;letter-spacing:-.02em;text-transform:uppercase;padding-left:20px}
+  .bar i{font-style:normal;color:var(--hot)}
+</style>
+</head>
+<body>
+<div class="top mono"><b>CADEN KEEN®</b><ul><li>Work</li><li>Experience</li><li>About</li><li>Contact</li></ul><span class="btn">Résumé ↗</span></div>
+<h1><span>Caden</span><span>Keen</span></h1>
+<div class="card c1"><img src="../public/work/pokeiq/home.webp" alt=""><small>02 — PokéIQ</small></div>
+<div class="card c2"><img src="../public/work/chordcraft/demo.gif" alt=""><small>01 — ChordCraft</small></div>
+<svg class="sticker" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="98" fill="#ff3d1f"/>
+  <defs><path id="p" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+  <text font-family="Space Mono" font-weight="700" font-size="17.5" letter-spacing="2.4" fill="#0b0b0b"><textPath href="#p">OPEN TO WORK ★ CLASS OF 2027 ★ HIRE ME ★ </textPath></text>
+  <text x="100" y="118" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="54" fill="#0b0b0b">↗</text>
+</svg>
+<p class="lede">Software engineer. I train the model, write the API, design the screen, and ship it.</p>
+<div class="cta mono"><span>See the work ↓</span><span>Email me</span></div>
+<div class="rows mono"><p><span>Model shipped</span><span>14M params</span></p><p><span>Orders synced</span><span>31K+</span></p><p><span>CI tests</span><span>500+</span></p></div>
+<div class="bar"><span>Python</span><i>✦</i><span>TypeScript</span><i>✦</i><span>PyTorch</span><i>✦</i><span>Next.js</span><i>✦</i><span>PostgreSQL</span><i>✦</i><span>Docker</span><i>✦</i><span>Kubernetes</span><i>✦</i><span>FastAPI</span></div>
+</body>
+</html>

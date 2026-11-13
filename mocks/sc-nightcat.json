@@ -1,0 +1,2 @@
+{ "url": "http://localhost:3210/?weather=fair", "prep": "document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme!=='night') (document.querySelector('.top .chip--icon')||{click(){}}).click();",
+  "clip": [590, 150, 210, 230], "every": 700, "until": 2000, "cols": 3, "settle": 2200 }

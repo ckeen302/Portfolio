@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>G2 — 16-bit RPG menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=Jersey+25&family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#ffd766;--cyan:#8fe6ff;--white:#f6f8ff;--dim:#b9c6f5;--deep:#070b2c;--green:#7dffa8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{
+  position:relative;color:var(--white);font-family:"DotGothic16",monospace;font-size:18px;
+  text-shadow:2px 2px 0 var(--deep);
+  background:
+    radial-gradient(1200px 700px at 50% 0%,rgba(70,96,220,.35),transparent 70%),
+    linear-gradient(45deg,rgba(255,255,255,.035) 25%,transparent 25% 75%,rgba(255,255,255,.035) 75%) 0 0/24px 24px,
+    linear-gradient(45deg,rgba(255,255,255,.035) 25%,transparent 25% 75%,rgba(255,255,255,.035) 75%) 12px 12px/24px 24px,
+    #060822;
+}
+svg{display:block;shape-rendering:crispEdges}
+.j{font-family:"Jersey 20",monospace;font-weight:400}
+
+/* ---------- window ---------- */
+.win{
+  position:absolute;border-radius:10px;border:3px solid #eef2ff;
+  background:linear-gradient(180deg,#3a63d6 0%,#2343ab 26%,#15277a 62%,#0c1650 100%);
+  box-shadow:0 0 0 3px #080c30,inset 0 0 0 3px #0a0f3a,inset 0 0 0 5px rgba(150,180,255,.38),8px 10px 0 rgba(0,0,0,.38);
+}
+.win>h2{
+  position:absolute;left:20px;top:-18px;height:32px;padding:0 14px 1px;display:flex;align-items:center;gap:10px;
+  font:400 24px/1 "Jersey 20",monospace;letter-spacing:3px;color:var(--gold);
+  background:#0a0f3a;border:3px solid #eef2ff;border-radius:6px;box-shadow:0 0 0 3px #080c30;
+}
+.win>h2 i{width:8px;height:8px;background:var(--gold);transform:rotate(45deg)}
+.win>h2 span{color:var(--dim);font:400 14px "DotGothic16";letter-spacing:1px;padding-top:2px}
+
+/* ---------- command bar ---------- */
+.cmd{left:28px;top:26px;width:1384px;height:66px;display:flex;align-items:center;padding:0 26px}
+.crest{width:40px;height:40px;border:3px solid var(--gold);border-radius:6px;display:grid;place-items:center;font:400 24px/1 "Jersey 20";color:var(--gold);background:#0a0f3a;margin-right:16px;padding-bottom:2px}
+.cmd .me{font:400 32px/1 "Jersey 20";letter-spacing:1px;margin-right:48px}
+.cmds{list-style:none;display:flex;gap:14px;font:400 30px/1 "Jersey 20";letter-spacing:1.5px}
+.cmds li{position:relative;padding:5px 20px 8px 42px;color:var(--dim)}
+.cmds li.sel{color:var(--white);background:rgba(8,12,48,.55);border-radius:6px;box-shadow:inset 0 0 0 2px rgba(255,215,102,.9)}
+.cmds li.sel svg{position:absolute;left:13px;top:12px}
+.cmd .rt{margin-left:auto;display:flex;gap:26px;align-items:center;font-size:18px}
+.cmd .rt .loc{color:var(--dim)}
+.cmd .rt .open{display:flex;align-items:center;gap:12px;color:var(--green)}
+.cmd .rt .open i{width:12px;height:12px;background:var(--green);transform:rotate(45deg);box-shadow:0 0 0 3px rgba(125,255,168,.25)}
+
+/* ---------- status ---------- */
+.status{left:28px;top:122px;width:396px;height:750px;padding:34px 26px 0}
+.status h1{font:400 76px/.9 "Jersey 25",monospace;letter-spacing:1px;text-shadow:4px 4px 0 var(--deep);white-space:nowrap}
+.status .cls{margin-top:10px;font-size:24px;color:var(--cyan)}
+.who{display:flex;gap:18px;margin-top:24px}
+.portrait{width:150px;height:150px;flex:none;border:3px solid #eef2ff;border-radius:6px;box-shadow:0 0 0 3px #080c30;overflow:hidden;background:#101a5c}
+.portrait canvas{width:144px;height:144px;image-rendering:pixelated;display:block}
+.who .r{flex:1;padding-top:0}
+.lv{display:flex;align-items:baseline;gap:10px;font:400 34px/1 "Jersey 20";color:var(--gold);letter-spacing:1px}
+.lv b{font:400 60px/46px "Jersey 25";color:var(--white);text-shadow:3px 3px 0 var(--deep)}
+.who .yr{margin-top:8px;font-size:18px;color:var(--dim);line-height:1.3}
+.exp{margin-top:12px}
+.exp .t{display:flex;justify-content:space-between;align-items:baseline;font:400 20px/1 "Jersey 20";color:var(--gold);letter-spacing:1.5px}
+.exp .t span:last-child{color:var(--white);font:400 16px "DotGothic16";letter-spacing:0}
+.gauge{margin-top:6px;height:14px;border:2px solid #eef2ff;border-radius:3px;background:#070b2c;padding:2px}
+.gauge u{display:block;height:100%;width:87.5%;background:linear-gradient(180deg,#fff2b0,#ffc83a 55%,#e08a12)}
+
+.attrs{margin-top:26px;border-top:2px solid rgba(238,242,255,.35)}
+.attrs div{display:flex;justify-content:space-between;align-items:center;height:46px;border-bottom:2px dotted rgba(185,198,245,.35);font-size:19px}
+.attrs dt{color:var(--gold);font:400 23px/1 "Jersey 20";letter-spacing:2.5px}
+.attrs dd{text-align:right}
+.attrs dd.ok{color:var(--green)}
+.btns{position:absolute;left:26px;right:26px;bottom:30px;display:flex;gap:16px}
+.btn{flex:1;height:54px;display:flex;align-items:center;justify-content:center;gap:10px;border-radius:6px;font:400 30px/1 "Jersey 20";letter-spacing:1.5px;padding-bottom:3px}
+.btn.a{background:linear-gradient(180deg,#fff0a8,#ffc83a);color:#1a1433;text-shadow:none;border:3px solid #fff;box-shadow:0 0 0 3px #080c30,0 5px 0 3px #080c30}
+.btn.b{border:3px solid #eef2ff;box-shadow:0 0 0 3px #080c30,0 5px 0 3px #080c30;background:rgba(8,12,48,.45)}
+
+/* ---------- quests ---------- */
+.quests{left:444px;top:122px;width:590px;height:418px;padding:30px 22px 0}
+.quest{display:flex;gap:18px;height:178px;padding:12px;border-radius:6px}
+.quest+.quest{margin-top:10px}
+.quest.sel{background:rgba(8,12,48,.5);box-shadow:inset 0 0 0 2px rgba(255,215,102,.9)}
+.quest .th{position:relative;width:196px;height:154px;flex:none;border:3px solid #eef2ff;border-radius:4px;box-shadow:0 0 0 3px #080c30;overflow:hidden;background:#000}
+.quest .th img{width:100%;height:100%;object-fit:cover;display:block}
+.quest .tx{flex:1;min-width:0}
+.quest .n{font:400 19px/1 "Jersey 20";letter-spacing:2.5px;color:var(--gold)}
+.quest h3{font:400 42px/.9 "Jersey 25";letter-spacing:1px;margin-top:2px;text-shadow:3px 3px 0 var(--deep)}
+.quest .sub{font-size:17px;color:var(--cyan);margin-top:4px;line-height:1.2;white-space:nowrap}
+.quest p{font-size:16px;line-height:1.3;margin-top:7px;color:#e4eaff}
+
+/* ---------- equipment ---------- */
+.equip{left:1054px;top:122px;width:358px;height:418px;padding:32px 24px 0}
+.equip ul{list-style:none;display:grid;grid-template-columns:1fr 1.15fr;grid-auto-flow:column;grid-template-rows:repeat(7,44px);column-gap:16px}
+.equip li{display:flex;align-items:center;gap:12px;font-size:21px;border-bottom:2px dotted rgba(185,198,245,.3)}
+.equip li i,.equip .ft i{width:10px;height:10px;transform:rotate(45deg);background:var(--gold);box-shadow:0 0 0 2px #080c30;flex:none}
+.equip li:nth-child(n+8) i,.equip .ft i.c{background:var(--cyan)}
+.equip .ft{margin-top:18px;display:flex;gap:20px;font-size:15px;color:var(--dim)}
+.equip .ft span{display:flex;align-items:center;gap:10px}
+
+/* ---------- party log ---------- */
+.log{left:444px;top:566px;width:968px;height:226px;padding:28px 22px 0}
+.entry{display:grid;grid-template-columns:134px 258px 1fr;column-gap:18px;align-items:center;height:62px;padding:0 12px;border-bottom:2px dotted rgba(185,198,245,.3)}
+.entry:last-child{border-bottom:0}
+.entry .d{color:var(--gold);font:400 22px/1 "Jersey 20";letter-spacing:.5px;white-space:nowrap}
+.entry .o{font:400 26px/1 "Jersey 20";letter-spacing:.5px;white-space:nowrap}
+.entry .ro{color:var(--cyan);font-size:18px;line-height:1.25;white-space:nowrap}
+.entry .de{font-size:16px;color:#e4eaff;line-height:1.3;white-space:nowrap}
+
+/* ---------- message ---------- */
+.msg{left:444px;top:814px;width:968px;height:58px;display:flex;align-items:center;padding:0 24px;font-size:19px}
+.msg .keys{margin-left:auto;display:flex;gap:22px;font-size:16px;color:var(--dim)}
+.msg .keys span{display:flex;align-items:center;gap:8px}
+.key{width:26px;height:26px;border-radius:50%;border:2px solid #eef2ff;display:grid;place-items:center;font:400 18px/1 "Jersey 20";color:var(--white);background:#0a0f3a;text-shadow:none;padding-bottom:1px}
+</style>
+</head>
+<body>
+
+<!-- COMMAND BAR -->
+<header class="win cmd">
+  <div class="crest">CK</div>
+  <div class="me">Caden Keen</div>
+  <ul class="cmds">
+    <li class="sel"><svg width="18" height="20" viewBox="0 0 9 10"><path fill="#080c30" d="M0 0h3v1h2v1h2v2h2v2h-2v2h-2v1h-2v1h-3z"/><path fill="#ffd766" d="M1 1h2v1h2v2h2v2h-2v2h-2v1h-2z"/></svg>Work</li>
+    <li>Experience</li>
+    <li>About</li>
+    <li>Contact</li>
+    <li>Résumé</li>
+  </ul>
+  <div class="rt"><span class="open"><i></i>Open to work</span></div>
+</header>
+
+<!-- STATUS -->
+<section class="win status">
+  <h2><i></i>STATUS</h2>
+  <h1>Caden Keen</h1>
+  <div class="cls">Software Engineer</div>
+  <div class="who">
+    <div class="portrait"><canvas id="pt" width="24" height="24"></canvas></div>
+    <div class="r">
+      <div class="lv">Lv<b>4</b></div>
+      <div class="yr">Senior<br>Computer Science</div>
+      <div class="exp">
+        <div class="t"><span>NEXT Lv</span><span>May 2027</span></div>
+        <div class="gauge"><u></u></div>
+      </div>
+    </div>
+  </div>
+  <dl class="attrs">
+    <div><dt>CLASS</dt><dd>Software Engineer</dd></div>
+    <div><dt>SCHOOL</dt><dd>University of Delaware</dd></div>
+    <div><dt>MAJOR</dt><dd>Computer Science</dd></div>
+    <div><dt>GRADUATES</dt><dd>May 2027</dd></div>
+    <div><dt>LOCATION</dt><dd>Newark, DE</dd></div>
+    <div><dt>STATE</dt><dd class="ok">Open to work</dd></div>
+  </dl>
+  <div class="btns">
+    <a class="btn a">See Work</a>
+    <a class="btn b">Résumé</a>
+  </div>
+</section>
+
+<!-- QUESTS -->
+<section class="win quests">
+  <h2><i></i>QUESTS <span>projects 2</span></h2>
+  <div class="quest sel">
+    <div class="th"><img src="../public/work/chordcraft/demo.gif" style="width:185%;height:auto;max-width:none;object-fit:initial;filter:brightness(1.3) saturate(1.15)" alt=""></div>
+    <div class="tx">
+      <div class="n">QUEST 01</div>
+      <h3>ChordCraft</h3>
+      <div class="sub">AI Chord Progression Generator</div>
+      <p>Trained a 14M-parameter PyTorch model on 680K songs; runs in the browser via ONNX.</p>
+    </div>
+  </div>
+  <div class="quest">
+    <div class="th"><img src="../public/work/pokeiq/home.webp" style="object-position:30% 40%" alt=""></div>
+    <div class="tx">
+      <div class="n">QUEST 02</div>
+      <h3>PokéIQ</h3>
+      <div class="sub">Multiplayer Pokémon Game Platform</div>
+      <p>Real-time PvP and matchmaking across 4 modes, 500+ CI tests, 2,000+ processed screenshots.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPMENT -->
+<section class="win equip">
+  <h2><i></i>EQUIPMENT <span>tech stack</span></h2>
+  <ul>
+    <li><i></i>Python</li><li><i></i>TypeScript</li><li><i></i>JavaScript</li><li><i></i>Java</li><li><i></i>C++</li><li><i></i>C#</li><li><i></i>SQL</li>
+    <li><i></i>React</li><li><i></i>Next.js</li><li><i></i>PyTorch</li><li><i></i>FastAPI</li><li><i></i>PostgreSQL</li><li><i></i>Docker</li><li><i></i>Kubernetes</li>
+  </ul>
+  <div class="ft"><span><i></i>Languages</span><span><i class="c"></i>Frameworks, infra</span></div>
+</section>
+
+<!-- PARTY LOG -->
+<section class="win log">
+  <h2><i></i>PARTY LOG <span>experience 3</span></h2>
+  <div class="entry">
+    <div class="d">Jun–Sep 2026</div>
+    <div class="o">MyBambino.com</div>
+    <div><div class="ro">Full-Stack Software Engineering Intern</div><div class="de">Python ETL pipeline syncing 31K+ orders</div></div>
+  </div>
+  <div class="entry">
+    <div class="d">Sep–Dec 2025</div>
+    <div class="o">University of Delaware</div>
+    <div><div class="ro">DevOps Systems Engineer – Sage Infrastructure</div><div class="de">Discord bot serving 4,000+ users on Docker/Kubernetes</div></div>
+  </div>
+  <div class="entry">
+    <div class="d">Jan–Jun 2025</div>
+    <div class="o">Domain Driven Solutions</div>
+    <div><div class="ro">Full-Stack Software Engineer Intern</div><div class="de">C#/ASP.NET APIs, Next.js</div></div>
+  </div>
+</section>
+
+<!-- MESSAGE -->
+<section class="win msg">
+  <span>Computer Science senior at the University of Delaware, graduating May 2027.</span>
+  <div class="keys"><span><i class="key">A</i>Select</span><span><i class="key">B</i>Back</span></div>
+</section>
+
+<script>
+/* original 24x24 portrait, drawn with rectangles */
+const cv=document.getElementById('pt'),g=cv.getContext('2d');
+const C={b:'#16226e',B:'#22349a',k:'#120e2a',h:'#3b2a24',H:'#5d4436',s:'#f1c6a2',S:'#d69d7c',e:'#1b1530',w:'#ffffff',m:'#b8645c',
+         j:'#2fb59c',J:'#1f8b79',g:'#dfe5f7',G:'#8d97bb',y:'#ffd766'};
+const r=(x,y,w,h,c)=>{g.fillStyle=C[c];g.fillRect(x,y,w,h)};
+r(0,0,24,24,'b'); r(0,0,24,9,'B'); for(let i=0;i<24;i+=2)r(i,9,1,1,'B');
+/* hoodie */
+r(2,20,20,4,'j'); r(4,19,16,1,'j'); r(2,20,2,4,'J'); r(20,20,2,4,'J'); r(8,18,8,2,'J'); r(10,21,1,3,'g'); r(13,21,1,3,'g');
+/* neck */
+r(10,16,4,3,'S');
+/* face */
+r(7,6,10,10,'s'); r(8,16,8,1,'s'); r(6,10,1,3,'s'); r(17,10,1,3,'s'); r(7,14,1,2,'S'); r(16,14,1,2,'S'); r(9,16,6,1,'S');
+/* hair */
+r(7,2,10,4,'h'); r(6,3,12,4,'h'); r(6,6,2,3,'h'); r(16,6,2,3,'h'); r(8,6,3,1,'h'); r(13,6,3,2,'h'); r(9,3,4,1,'H'); r(8,4,2,1,'H');
+/* brows, eyes, nose, mouth */
+r(8,9,3,1,'h'); r(13,9,3,1,'h'); r(9,10,2,2,'e'); r(13,10,2,2,'e'); r(9,10,1,1,'w'); r(13,10,1,1,'w'); r(11,12,1,2,'S'); r(10,14,4,1,'m');
+/* headphones */
+r(7,1,10,1,'g'); r(5,2,3,1,'g'); r(16,2,3,1,'g'); r(4,3,2,5,'g'); r(18,3,2,5,'g'); r(3,8,3,6,'G'); r(18,8,3,6,'G'); r(4,9,1,4,'y'); r(19,9,1,4,'y');
+</script>
+</body>
+</html>

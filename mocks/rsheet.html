@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Handheld RPG variations</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:1800px;height:1420px;background:#111113;color:#f2f2f3;font-family:"Inter Tight",sans-serif;overflow:hidden}
+  h1{margin:0;padding:34px 40px 6px;font:600 34px "Inter Tight";letter-spacing:-.03em}
+  h1 span{color:#8a8a92;font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px 22px;padding:20px 40px}
+  figure{margin:0;grid-column:span 2}
+  figure:nth-child(3){grid-column:2 / span 2}
+  img{display:block;width:100%;aspect-ratio:1440/900;border-radius:10px;border:1px solid rgba(255,255,255,.14)}
+  figcaption{display:flex;align-items:baseline;gap:12px;margin-top:12px}
+  figcaption b{font:700 26px "Inter Tight";letter-spacing:-.03em}
+  figcaption i{font:500 12px "JetBrains Mono";font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#f26b3a}
+  figure p{margin:6px 0 0;font:500 16.5px/1.35 "Inter Tight";color:#a6a6ae;letter-spacing:-.01em}
+</style>
+</head>
+<body>
+<h1>Handheld RPG <span>— three variations with clearer text.</span></h1>
+<div class="grid">
+  <figure><img src="out/r1-clean.jpg"><figcaption><i>Option R1</i><b>Same look, clearer text</b></figcaption><p>The layout you liked. Pixel titles stay; sentences and labels move to a larger terminal-style face.</p></figure>
+  <figure><img src="out/r2-mono.jpg"><figcaption><i>Option R2</i><b>Wide scene, mono text</b></figcaption><p>The room runs full width with your status card on it. Reading text is a clean monospace, the most legible of the three.</p></figure>
+  <figure><img src="out/r3-night.jpg"><figcaption><i>Option R3</i><b>Night shift</b></figcaption><p>Same layout in a dark palette with the desk lamp lit. Taller, cleaner pixel titles.</p></figure>
+</div>
+</body>
+</html>

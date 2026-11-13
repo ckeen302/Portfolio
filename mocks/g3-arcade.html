@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>G3 — Arcade CRT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--ye:#ffe54a;--mg:#ff3ea5;--cy:#35e9ff;--gr:#5dff8f;--or:#ff9a3d;--rd:#ff5562;--pu:#b98cff;--wh:#f5f7ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden;background:#050507}
+body{position:relative;font-family:"Press Start 2P",monospace;color:var(--wh);-webkit-font-smoothing:none}
+
+.crt{
+  position:absolute;left:14px;top:14px;right:14px;bottom:14px;border-radius:34px;overflow:hidden;
+  background:
+    radial-gradient(900px 520px at 50% 22%,rgba(255,62,165,.16),transparent 70%),
+    radial-gradient(700px 400px at 50% 105%,rgba(53,233,255,.20),transparent 70%),
+    #07060f;
+  box-shadow:0 0 0 3px #1d1b2c,0 0 0 10px #0d0c16,inset 0 0 120px rgba(0,0,0,.9);
+}
+/* stars */
+.stars{position:absolute;inset:0;
+  background:
+    radial-gradient(#fff 1px,transparent 1.6px) 0 0/190px 170px,
+    radial-gradient(rgba(53,233,255,.9) 1px,transparent 1.6px) 60px 90px/230px 210px,
+    radial-gradient(rgba(255,62,165,.9) 1px,transparent 1.6px) 120px 30px/270px 190px;
+  opacity:.5}
+/* perspective floor */
+.floor{position:absolute;left:-30%;right:-30%;bottom:-40px;height:260px;transform:perspective(420px) rotateX(64deg);transform-origin:50% 100%;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,62,165,.55) 0 2px,transparent 2px 80px),
+    repeating-linear-gradient(0deg,rgba(255,62,165,.55) 0 2px,transparent 2px 46px);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 75%);mask-image:linear-gradient(180deg,transparent 0,#000 75%);opacity:.75}
+/* inner frame */
+.frame{position:absolute;inset:22px;border:2px solid rgba(53,233,255,.55);border-radius:18px;box-shadow:0 0 14px rgba(53,233,255,.35),inset 0 0 14px rgba(53,233,255,.2)}
+
+/* HUD */
+.hud{position:absolute;left:64px;right:64px;top:50px;display:grid;grid-template-columns:1fr 1fr 1fr;font-size:16px;line-height:1}
+.hud div{display:flex;flex-direction:column;gap:10px}
+.hud .c{align-items:center}.hud .r{align-items:flex-end}
+.hud .l1{color:var(--rd);text-shadow:0 0 10px rgba(255,85,98,.7)}
+.hud .r .l1{color:var(--gr);text-shadow:0 0 10px rgba(93,255,143,.7)}
+.hud .r span:last-child{display:flex;gap:12px;align-items:center}
+.hud .r i{width:12px;height:12px;background:var(--gr);box-shadow:0 0 10px var(--gr)}
+
+/* title */
+h1{position:absolute;left:0;right:0;top:134px;text-align:center;font-size:88px;line-height:1;font-weight:400;color:var(--ye);letter-spacing:2px;
+  text-shadow:5px 5px 0 var(--mg),10px 10px 0 #6a1fd0,0 0 46px rgba(255,62,165,.55)}
+.role{position:absolute;left:0;right:0;top:258px;text-align:center;font-size:28px;letter-spacing:8px;color:var(--cy);text-shadow:0 0 16px rgba(53,233,255,.8)}
+.facts{position:absolute;left:0;right:0;top:310px;text-align:center;font-size:13px;line-height:26px;letter-spacing:1px;color:#d9dcf2}
+.facts b{font-weight:400;color:var(--mg)}
+
+/* columns */
+.col{position:absolute;top:396px}
+.col h2{font-size:20px;font-weight:400;letter-spacing:2px;display:flex;align-items:center;gap:16px;white-space:nowrap}
+.col h2::after{content:"";flex:1;height:4px;background:repeating-linear-gradient(90deg,currentColor 0 8px,transparent 8px 14px);opacity:.7}
+.stages{left:84px;width:644px}
+.stages h2{color:var(--mg);text-shadow:0 0 14px rgba(255,62,165,.8)}
+.cards{display:flex;gap:24px;margin-top:26px}
+.stage{position:relative;width:310px;border:3px solid rgba(53,233,255,.55);background:rgba(6,8,20,.85);padding:10px 10px 14px}
+.stage.sel{border-color:var(--ye);box-shadow:0 0 0 3px #07060f,0 0 0 6px var(--ye),0 0 28px rgba(255,229,74,.45)}
+.stage .th{height:150px;overflow:hidden;position:relative;background:#000}
+.stage .th img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.15) contrast(1.05)}
+.stage .th::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+.stage .no{margin-top:14px;font-size:12px;color:var(--ye);display:flex;justify-content:space-between}
+.stage .no span:last-child{color:var(--gr)}
+.stage:not(.sel) .no{color:var(--cy)}
+.stage h3{margin-top:10px;font-size:20px;font-weight:400;letter-spacing:1px}
+.stage p{margin-top:12px;font-size:10px;line-height:20px;color:#cfd3ee;letter-spacing:.5px}
+.stage.sel::before{content:"";position:absolute;left:-30px;top:76px;border:10px solid transparent;border-left:14px solid var(--ye);filter:drop-shadow(0 0 6px var(--ye))}
+
+.scores{left:776px;width:580px}
+.scores h2{color:var(--cy);text-shadow:0 0 14px rgba(53,233,255,.8)}
+table{border-collapse:collapse;width:100%;margin-top:22px;font-size:15px}
+th{font-weight:400;text-align:left;color:#8d91b3;font-size:12px;padding:6px 0 12px}
+td{padding:0;height:41px;white-space:nowrap}
+th:nth-child(2),td:nth-child(2){text-align:right;padding-right:26px}
+td:first-child{width:74px}
+tr.a td{color:var(--rd);text-shadow:0 0 10px rgba(255,85,98,.65)}
+tr.b td{color:var(--or);text-shadow:0 0 10px rgba(255,154,61,.6)}
+tr.c td{color:var(--ye);text-shadow:0 0 10px rgba(255,229,74,.55)}
+tr.d td{color:var(--gr);text-shadow:0 0 10px rgba(93,255,143,.55)}
+tr.e td{color:var(--cy);text-shadow:0 0 10px rgba(53,233,255,.6)}
+tr.f td{color:var(--pu);text-shadow:0 0 10px rgba(185,140,255,.6)}
+td small{font-size:10px;color:#9da1c2;text-shadow:none;margin-left:8px}
+
+.ac{position:relative}
+.ac::after{content:"";position:absolute;left:.375em;top:-.25em;width:.125em;height:.125em;background:currentColor;box-shadow:.125em -.125em 0 currentColor}
+
+/* start + nav */
+.start{position:absolute;left:0;right:0;top:752px;display:flex;justify-content:center;align-items:center;gap:26px;font-size:30px;color:var(--ye);letter-spacing:4px;text-shadow:0 0 18px rgba(255,229,74,.85),3px 3px 0 #7a4a00}
+.start i{width:0;height:0;border:11px solid transparent;border-left:16px solid var(--ye)}
+.start i:last-child{transform:scaleX(-1)}
+nav{position:absolute;left:0;right:0;top:816px;display:flex;justify-content:center;gap:14px;font-size:14px;letter-spacing:1px}
+nav a{padding:10px 16px;color:var(--wh);text-shadow:2px 2px 0 #000}
+nav a.sel{background:var(--cy);color:#04121a;text-shadow:none;box-shadow:0 0 18px rgba(53,233,255,.6)}
+
+/* CRT overlays */
+.scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+.vig{position:absolute;inset:0;pointer-events:none;border-radius:34px;background:radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(0,0,0,.6) 100%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.04)}
+.glare{position:absolute;left:40px;top:26px;width:520px;height:220px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.07),transparent);transform:rotate(-18deg);pointer-events:none}
+</style>
+</head>
+<body>
+<div class="crt">
+  <div class="stars"></div>
+  <div class="floor"></div>
+  <div class="frame"></div>
+
+  <div class="hud">
+    <div><span class="l1">PLAYER 1</span><span>CADEN KEEN</span></div>
+    <div class="c"><span class="l1">HI-SCORE</span><span>14,000,000</span></div>
+    <div class="r"><span class="l1">STATUS</span><span><i></i>OPEN TO WORK</span></div>
+  </div>
+
+  <h1>CADEN KEEN</h1>
+  <div class="role">SOFTWARE ENGINEER</div>
+  <div class="facts">COMPUTER SCIENCE SENIOR <b>/</b> UNIVERSITY OF DELAWARE<br>GRADUATING MAY 2027 <b>/</b> NEWARK, DE</div>
+
+  <section class="col stages">
+    <h2>STAGE SELECT</h2>
+    <div class="cards">
+      <div class="stage sel">
+        <div class="th"><img src="../public/work/chordcraft/demo.gif" style="width:175%;height:auto;max-width:none;filter:brightness(1.35) saturate(1.2)" alt=""></div>
+        <div class="no"><span>STAGE 1</span><span>SELECTED</span></div>
+        <h3>CHORDCRAFT</h3>
+        <p>AI CHORD PROGRESSION GENERATOR</p>
+      </div>
+      <div class="stage">
+        <div class="th"><img src="../public/work/pokeiq/home.webp" style="object-position:28% 40%" alt=""></div>
+        <div class="no"><span>STAGE 2</span></div>
+        <h3>POK<span class="ac">E</span>IQ</h3>
+        <p>MULTIPLAYER POK<span class="ac">E</span>MON GAME PLATFORM</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col scores">
+    <h2>HIGH SCORES</h2>
+    <table>
+      <tr><th>RANK</th><th>SCORE</th><th>NAME</th></tr>
+      <tr class="a"><td>1ST</td><td>14,000,000</td><td>MODEL PARAMETERS</td></tr>
+      <tr class="b"><td>2ND</td><td>680,000</td><td>SONGS TRAINED ON</td></tr>
+      <tr class="c"><td>3RD</td><td>31,000+</td><td>ORDERS SYNCED</td></tr>
+      <tr class="d"><td>4TH</td><td>4,000+</td><td>DISCORD BOT USERS</td></tr>
+      <tr class="e"><td>5TH</td><td>2,000+</td><td>SCREENSHOTS</td></tr>
+      <tr class="f"><td>6TH</td><td>500+</td><td>CI TESTS</td></tr>
+    </table>
+  </section>
+
+  <div class="start"><i></i>PRESS START<i></i></div>
+  <nav><a class="sel">WORK</a><a>EXPERIENCE</a><a>ABOUT</a><a>CONTACT</a><a>R<span class="ac">E</span>SUM<span class="ac">E</span></a></nav>
+
+  <div class="scan"></div>
+  <div class="glare"></div>
+  <div class="vig"></div>
+</div>
+</body>
+</html>

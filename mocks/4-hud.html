@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option 4 — Mission Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--line:rgba(120,190,255,.34);--cy:#7fd6ff;--hot:#ff6a2b;--tx:#e9f3ff;--dim:#6c86a6}
+  html,body{margin:0;width:1440px;height:900px;background:#03060d;color:var(--tx);overflow:hidden;font-family:"Chakra Petch",sans-serif}
+  .bg{position:absolute;inset:0;background:radial-gradient(52% 60% at 68% 48%,rgba(30,90,190,.36),transparent 70%),radial-gradient(40% 40% at 10% 100%,rgba(255,106,43,.10),transparent 70%)}
+  .grid{position:absolute;left:-400px;right:-400px;bottom:-190px;height:520px;background:
+     repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 80px),repeating-linear-gradient(0deg,var(--line) 0 1px,transparent 1px 80px);
+     transform:perspective(700px) rotateX(64deg);opacity:.55;-webkit-mask-image:linear-gradient(0deg,#000,transparent 85%)}
+  .mono{font:500 11.5px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+  svg{position:absolute;inset:0}
+  .bar{position:absolute;top:26px;left:44px;right:44px;display:flex;justify-content:space-between;color:var(--cy)}
+  .bar span i{font-style:normal;color:var(--hot)}
+  .nav{position:absolute;top:66px;left:44px;display:flex;gap:30px;color:var(--dim)}
+  .nav b{color:var(--tx);font-weight:500;border-bottom:1px solid var(--hot);padding-bottom:5px}
+  .id{position:absolute;left:44px;top:278px}
+  .id .k{color:var(--cy)}
+  h1{margin:14px 0 0;font:600 112px/.92 "Chakra Petch";letter-spacing:-.02em}
+  h2{margin:18px 0 0;font:500 26px "Chakra Petch";color:var(--cy);letter-spacing:.02em}
+  .id p{width:470px;margin:22px 0 0;font:400 19px/1.45 "Chakra Petch";color:#b6c6da}
+  .cta{display:flex;gap:14px;margin-top:30px}
+  .cta span{position:relative;padding:15px 24px;border:1px solid var(--cy);color:var(--tx)}
+  .cta span:first-child{background:var(--cy);color:#03101c;border-color:var(--cy);font-weight:600}
+  .cta span::before,.cta span::after{content:"";position:absolute;width:8px;height:8px;border:2px solid var(--hot)}
+  .cta span::before{left:-5px;top:-5px;border-right:0;border-bottom:0}
+  .cta span::after{right:-5px;bottom:-5px;border-left:0;border-top:0}
+  .panel{position:absolute;right:44px;bottom:44px;width:300px;border:1px solid var(--line);background:rgba(6,14,28,.72);padding:16px 18px}
+  .panel h3{margin:0 0 10px;color:var(--cy);font:500 11.5px "IBM Plex Mono";letter-spacing:.12em}
+  .panel p{display:flex;justify-content:space-between;margin:0;padding:7px 0;border-top:1px solid rgba(120,190,255,.18);color:#b6c6da}
+  .panel p b{color:var(--tx);font-weight:500}
+  .foot{position:absolute;left:44px;bottom:44px;color:var(--dim);line-height:2}
+  .foot b{color:var(--hot);font-weight:500}
+  .lbl{font:500 11.5px "IBM Plex Mono";letter-spacing:.1em;fill:#e9f3ff}
+  .sub{font:400 10.5px "IBM Plex Mono";letter-spacing:.08em;fill:#7fd6ff}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="grid"></div>
+<svg id="s" viewBox="0 0 1440 900"></svg>
+<div class="bar mono"><span>CK-OS 26.11 <i>●</i> online</span><span>39.6837° N  75.7497° W — Newark, DE — 13:42:07 ET</span><span>Status: <i>open to work</i></span></div>
+<div class="nav mono"><b>00 Home</b><span>01 Work</span><span>02 Experience</span><span>03 About</span><span>04 Contact</span><span>Résumé ↗</span></div>
+<div class="id">
+  <span class="mono k">// Ident</span>
+  <h1>Caden<br>Keen</h1>
+  <h2>Software Engineer</h2>
+  <p>I train the model, write the API, design the screen, and ship it. Graduating May 2027.</p>
+  <div class="cta mono"><span>View work</span><span>Résumé</span></div>
+</div>
+<div class="panel mono"><h3>// Telemetry</h3><p><span>Model shipped</span><b>14M params</b></p><p><span>Orders synced</span><b>31K+</b></p><p><span>Users served</span><b>4,000+</b></p><p><span>CI tests</span><b>500+</b></p></div>
+<p class="foot mono">Drag to rotate · scroll to enter<br><b>04</b> systems in orbit</p>
+<script>
+const svg = document.getElementById('s'), NS = 'http://www.w3.org/2000/svg';
+const CX = 900, CY = 432, R = 205, TX = 0.42, TZ = -0.3;
+function proj(x, y, z) {        // tilt toward the viewer, then roll
+  let y1 = y * Math.cos(TX) - z * Math.sin(TX), z1 = y * Math.sin(TX) + z * Math.cos(TX);
+  const x2 = x * Math.cos(TZ) - y1 * Math.sin(TZ), y2 = x * Math.sin(TZ) + y1 * Math.cos(TZ);
+  return [CX + x2 * R, CY - y2 * R, z1];
+}
+function add(tag, attrs) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); svg.appendChild(e); return e; }
+function curve(fn, n, front, back) {     // draws the near and far halves of a 3D curve with different strokes
+  let seg = [], last = null;
+  const flush = () => { if (seg.length > 1) add('polyline', Object.assign({ points: seg.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '), fill: 'none' }, last ? front : back)); };
+  for (let i = 0; i <= n; i++) {
+    const p = proj(...fn(i / n)), f = p[2] >= 0;
+    if (last !== null && f !== last) { seg.push(p); flush(); seg = [p]; } else seg.push(p);
+    last = f;
+  }
+  flush();
+}
+const F = { stroke: 'rgba(150,210,255,.75)', 'stroke-width': 1 }, Bk = { stroke: 'rgba(120,190,255,.16)', 'stroke-width': 1 };
+add('circle', { cx: CX, cy: CY, r: R, fill: 'rgba(20,60,130,.22)', stroke: 'rgba(150,210,255,.5)' });
+for (let lat = -75; lat <= 75; lat += 15) { const a = lat * Math.PI / 180; curve(t => [Math.cos(a) * Math.cos(t * 6.2832), Math.sin(a), Math.cos(a) * Math.sin(t * 6.2832)], 120, F, Bk); }
+for (let lon = 0; lon < 180; lon += 15) { const a = lon * Math.PI / 180; curve(t => [Math.cos(t * 6.2832) * Math.cos(a), Math.sin(t * 6.2832), Math.cos(t * 6.2832) * Math.sin(a)], 120, F, Bk); }
+// orbits with one "system" on each
+const orbits = [
+  { r: 1.42, inc: 0.2, node: 0.07, dir: [1, 0.5], name: '01 CHORDCRAFT', sub: '14M-PARAM AI MODEL', hot: true },
+  { r: 1.72, inc: -0.45, node: 0.6, dir: [-0.8, 1], name: '02 POKÉIQ', sub: '500+ CI TESTS' },
+  { r: 2.02, inc: 0.62, node: 0.34, dir: [-0.25, -1], name: '03 MYBAMBINO', sub: '31K ORDERS SYNCED' },
+  { r: 1.56, inc: 1.05, node: 0.86, dir: [1, -0.9], name: '04 SAGE', sub: '4,000 USERS' },
+];
+for (const o of orbits) {
+  const pt = t => { const a = t * 6.2832, x = Math.cos(a) * o.r, z = Math.sin(a) * o.r; const c = Math.cos(o.node * 6.2832), s = Math.sin(o.node * 6.2832);
+    const y = z * Math.sin(o.inc), z1 = z * Math.cos(o.inc); return [x * c - z1 * s, y, x * s + z1 * c]; };
+  curve(pt, 200, { stroke: 'rgba(150,210,255,.55)', 'stroke-width': 1, 'stroke-dasharray': o.hot ? '' : '2 6' }, { stroke: 'rgba(120,190,255,.2)', 'stroke-width': 1, 'stroke-dasharray': '2 6' });
+  // put the system where its orbit reaches furthest in the wanted direction, so labels sit outside the globe
+  let best = 0, score = -1e9;
+  for (let t = 0; t < 1; t += 0.005) { const q = proj(...pt(t)); const sc = (q[0] - CX) * o.dir[0] + (q[1] - CY) * o.dir[1]; if (sc > score) { score = sc; best = t; } }
+  const [x, y] = proj(...pt(best)), col = o.hot ? '#ff6a2b' : '#7fd6ff';
+  const lx = x >= CX ? 1 : -1, ly = y >= CY ? 1 : -1;
+  if (o.hot) add('circle', { cx: x, cy: y, r: 17, fill: 'none', stroke: col, 'stroke-opacity': .5 });
+  add('circle', { cx: x, cy: y, r: 9, fill: '#03060d', stroke: col });
+  add('circle', { cx: x, cy: y, r: 4, fill: col });
+  const ex = x + lx * 34, ey = y + ly * 30, tx = ex + lx * 150;
+  add('polyline', { points: `${x + lx * 8},${y + ly * 7} ${ex},${ey} ${tx},${ey}`, fill: 'none', stroke: col, 'stroke-opacity': .8 });
+  const anchor = lx > 0 ? 'start' : 'end', ox = lx > 0 ? ex + 6 : ex - 6;
+  const t1 = add('text', { x: ox, y: ey - 9, class: 'lbl', 'text-anchor': anchor }); t1.textContent = o.name; if (o.hot) t1.style.fill = '#ff6a2b';
+  const t2 = add('text', { x: ox, y: ey + 17, class: 'sub', 'text-anchor': anchor }); t2.textContent = o.sub;
+}
+// corner brackets and a reticle
+for (const [x, y, sx, sy] of [[24, 24, 1, 1], [1416, 24, -1, 1], [24, 876, 1, -1], [1416, 876, -1, -1]])
+  add('polyline', { points: `${x},${y + sy * 26} ${x},${y} ${x + sx * 26},${y}`, fill: 'none', stroke: '#7fd6ff', 'stroke-width': 1.5 });
+add('line', { x1: CX - R - 40, y1: CY, x2: CX - R - 12, y2: CY, stroke: '#7fd6ff' }); add('line', { x1: CX + R + 12, y1: CY, x2: CX + R + 40, y2: CY, stroke: '#7fd6ff' });
+add('line', { x1: CX, y1: CY - R - 40, x2: CX, y2: CY - R - 12, stroke: '#7fd6ff' }); add('line', { x1: CX, y1: CY + R + 12, x2: CX, y2: CY + R + 40, stroke: '#7fd6ff' });
+</script>
+</body>
+</html>

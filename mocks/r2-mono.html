@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>R2 — Pixel titles, mono text</title>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4f0dc;--card:#f4f0dc;--frame:#182630;--line:#bccbb4;--ink:#182630;--mut:#2f4858;--soft:#bccbb4;--inv:#f4f0dc;--or:#f26b3a;--ye:#f2c14e;
+  --fd:"Silkscreen",monospace;--ft:"Space Mono",monospace;--step:polygon(0 8px,8px 8px,8px 0,calc(100% - 8px) 0,calc(100% - 8px) 8px,100% 8px,100% calc(100% - 8px),calc(100% - 8px) calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,8px calc(100% - 8px),0 calc(100% - 8px))}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{position:relative;color:var(--ink);font-family:var(--ft);font-weight:400;
+  background:linear-gradient(rgba(24,38,48,.05) 1px,transparent 1px) 0 0/100% 4px,linear-gradient(90deg,rgba(24,38,48,.05) 1px,transparent 1px) 0 0/4px 100%,var(--paper)}
+svg{display:block;shape-rendering:crispEdges}
+.top{position:absolute;left:40px;right:40px;top:26px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:16px}
+.mono{width:48px;height:48px;background:var(--frame);color:var(--inv);font:700 24px var(--fd);display:grid;place-items:center}
+.brand b{font:700 24px var(--fd);letter-spacing:1px}
+.brand span{font-size:15px;color:var(--mut);padding-left:16px;border-left:4px solid var(--line);text-transform:none;letter-spacing:.5px}
+.tr{display:flex;align-items:center;gap:28px;font-size:15px;text-transform:none;letter-spacing:.5px}
+.tr .open{display:flex;align-items:center;gap:10px}
+.tr .open i{width:12px;height:12px;background:var(--or);box-shadow:0 0 0 4px rgba(242,107,58,.28)}
+.btn{display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 20px;background:var(--frame);color:var(--inv);font:700 16px var(--fd);letter-spacing:1px;box-shadow:6px 6px 0 var(--or)}
+.btn path{fill:var(--inv)}
+.box{position:absolute;filter:drop-shadow(8px 8px 0 rgba(47,72,88,.30))}
+.box::before{content:"";position:absolute;inset:0;background:var(--frame);clip-path:var(--step)}
+.box>.in{position:absolute;inset:8px;background:var(--card);clip-path:var(--step);overflow:hidden}
+.box>.in::after{content:"";position:absolute;inset:6px;border:2px solid var(--line);pointer-events:none}
+.status .in,.card.status{padding:28px 30px 0}
+.row1{display:flex;justify-content:space-between;align-items:center}
+.tag{display:inline-block;background:var(--frame);color:var(--inv);font:700 16px var(--fd);padding:4px 12px 6px;letter-spacing:2px}
+.cls{font-size:15px;color:var(--mut);letter-spacing:1px;text-transform:none}
+h1{font:700 50px/1 var(--fd);margin-top:22px;white-space:nowrap;letter-spacing:.5px}
+.role{display:inline-block;margin-top:16px;background:var(--or);color:#182630;font:700 23px/1.1 var(--fd);padding:6px 14px 8px;box-shadow:6px 6px 0 var(--frame)}
+.facts{list-style:none;margin-top:28px;font-size:17px;line-height:30px;color:var(--ink)}
+.facts li{display:flex;align-items:center;gap:12px}
+.facts li::before{content:"";width:8px;height:8px;background:var(--or)}
+.stats{margin-top:18px;padding-top:18px;border-top:4px dotted var(--mut);display:grid;grid-template-columns:1fr 1fr;gap:14px 28px}
+.stats.one{grid-template-columns:1fr;gap:6px;margin-top:10px;padding-top:10px}
+.stat .l{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;line-height:1.15}
+.stat .l span{color:var(--mut);text-transform:none;letter-spacing:.5px}
+.stat .l b{font:700 17px/1 "Space Mono",monospace}
+.bar{display:block;position:relative;height:14px;margin-top:5px;background:repeating-linear-gradient(90deg,var(--soft) 0 10px,transparent 10px 12px)}
+.bar u{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(90deg,var(--ink) 0 10px,transparent 10px 12px)}
+.bar.o u{background:repeating-linear-gradient(90deg,var(--or) 0 10px,transparent 10px 12px)}
+.stats.one .bar{height:8px;margin-top:3px}
+.scene canvas{position:absolute;left:0;top:0;image-rendering:pixelated}
+.scene>.in::after{display:none}
+.plate{position:absolute;left:16px;top:16px;background:#182630;color:#f4f0dc;font:700 16px var(--fd);padding:5px 12px 7px;display:flex;gap:10px;align-items:center;z-index:2;letter-spacing:1px}
+.plate.r{left:auto;right:28px;top:auto;bottom:22px}
+.card.status{position:absolute;left:28px;top:60px;width:478px;height:330px;background:var(--card);border:8px solid var(--frame);box-shadow:8px 8px 0 rgba(24,38,48,.35);z-index:2}
+.glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(closest-side,rgba(242,193,78,.36),rgba(242,193,78,0));mix-blend-mode:screen;pointer-events:none}
+.who{position:absolute;left:36px;top:-14px;z-index:3;background:var(--frame);color:var(--inv);font:700 16px var(--fd);letter-spacing:2px;padding:5px 16px 7px;box-shadow:4px 4px 0 var(--or)}
+.dialog .in{padding:42px 40px 0}
+.dialog p{font-size:23px;line-height:37px}
+.dialog p em{font-style:normal;background:linear-gradient(transparent 64%,rgba(242,193,78,.9) 64% 92%,transparent 92%)}
+.more{position:absolute;right:30px;bottom:26px}
+.statbox .in{padding:16px 22px 0}
+.menu .in{padding:22px 24px}
+.menu ul{list-style:none}
+.menu li{position:relative;height:48px;display:flex;align-items:center;padding-left:52px;font:700 25px/1 var(--fd);letter-spacing:1px}
+.menu li.sel{background:var(--frame);color:var(--inv)}
+.menu li.sel svg{position:absolute;left:18px;top:10px;fill:var(--or)}
+.menu li small{margin-left:auto;margin-right:16px;font:400 17px var(--ft);color:var(--mut)}
+.menu li.sel small{color:var(--or)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="mono">CK</div><b>CADEN KEEN</b><span>Software Engineer</span></div>
+  <div class="tr"><div class="open"><i></i>Open to work</div>
+    <a class="btn">RÉSUMÉ <svg width="12" height="14" viewBox="0 0 6 7"><path d="M2 0h2v3h2v1h-1v1h-1v1h-2v-1h-1v-1h-1v-1h2zM0 6h6v1h-6z"/></svg></a></div>
+</header>
+
+<section class="box scene" style="left:40px;top:100px;width:1360px;height:496px"><div class="in">
+  <canvas id="c" width="272" height="96" style="width:1360px;height:480px"></canvas>
+  <div class="card status">
+  <div class="row1"><span class="tag">STATUS</span><span class="cls">CLASS OF 2027</span></div>
+  <h1>CADEN KEEN</h1>
+  <div class="role">SOFTWARE ENGINEER</div>
+  <ul class="facts">
+    <li>Computer Science senior</li>
+    <li>University of Delaware</li>
+    <li>Graduating May 2027</li>
+  </ul></div>
+  <div class="plate r"><svg width="12" height="16" viewBox="0 0 6 8"><path fill="currentColor" d="M1 0h4v1h1v3h-1v1h-1v2h-1v1h-1v-3h-1v-1h-1v-3h1z"/></svg>NEWARK, DE</div>
+</div></section>
+<section class="box dialog" style="left:40px;top:616px;width:640px;height:252px">
+  <div class="who">CADEN</div>
+  <div class="in">
+    <p>Computer Science senior at the <em>University of Delaware</em>, graduating <em>May 2027</em>. Based in Newark, DE. Open to work.</p>
+    <svg class="more" width="28" height="16" viewBox="0 0 7 4"><path fill="#f26b3a" d="M0 0h7v1h-7zM1 1h5v1h-5zM2 2h3v1h-3zM3 3h1v1h-1z"/></svg>
+  </div></section>
+<section class="box statbox" style="left:696px;top:616px;width:308px;height:252px"><div class="in"><span class="tag">STATS</span><div class="stats one">
+    <div class="stat"><div class="l"><span>CI tests</span><b>500+</b></div><i class="bar"><u style="width:38%"></u></i></div>
+    <div class="stat"><div class="l"><span>Bot users</span><b>4,000+</b></div><i class="bar"><u style="width:55%"></u></i></div>
+    <div class="stat"><div class="l"><span>Orders</span><b>31K+</b></div><i class="bar"><u style="width:72%"></u></i></div>
+    <div class="stat"><div class="l"><span>Songs</span><b>680K</b></div><i class="bar o"><u style="width:92%"></u></i></div></div></div></section>
+<nav class="box menu" style="left:1020px;top:616px;width:380px;height:252px"><div class="in">
+  <ul>
+    <li class="sel"><svg width="16" height="28" viewBox="0 0 4 7"><path d="M0 0h1v7h-1zM1 1h1v5h-1zM2 2h1v3h-1zM3 3h1v1h-1z"/></svg><span>WORK</span><small>2</small></li>
+    <li><span>EXPERIENCE</span><small>3</small></li>
+    <li><span>ABOUT</span></li>
+    <li><span>CONTACT</span></li>
+  </ul></div></nav>
+<script>
+const cv=document.getElementById('c'),g=cv.getContext('2d'),W=272;
+const P={0:'#f4f0dc',1:'#bccbb4',2:'#6f8a86',3:'#2f4858',k:'#182630',o:'#f26b3a',y:'#f2c14e',d:'#f4f0dc'};
+const r=(x,y,w,h,c)=>{g.fillStyle=P[c];g.fillRect(x,y,w,h)};
+/* wall + floor, full width */
+r(0,0,W,66,1);
+for(let j=3;j<60;j+=6)for(let i=(j%12<6?2:6);i<W;i+=8)r(i,j,1,1,'d');
+r(0,61,W,1,2); r(0,62,W,4,3);
+r(0,66,W,30,2);
+[73,81,89].forEach(y=>r(0,y,W,1,3));
+[[66,6],[74,22],[82,12],[90,28]].forEach(([y,o])=>{for(let i=o;i<W;i+=34)r(i,y,1,(y==90?6:7),3)});
+g.translate(104,0);
+/* window */
+r(8,10,34,36,'k'); r(10,12,30,32,3);
+[[13,15],[21,20],[36,14],[17,29],[31,33],[37,25],[28,40],[20,36]].forEach(([a,b])=>r(a,b,1,1,0));
+r(29,16,6,8,0); r(28,17,8,6,0); r(31,18,2,2,1); r(29,21,1,1,1);
+r(24,12,2,32,'k'); r(10,27,30,2,'k');
+r(6,46,38,2,0); r(6,48,38,1,3);
+
+/* poster */
+r(48,6,20,23,'k'); r(49,7,18,21,0);
+[[51,8],[54,14],[57,6],[60,11],[63,9]].forEach(([a,h],i)=>r(a,25-h,2,h,i%2?'o':3));
+r(51,26,14,1,'k');
+
+/* shelf + books */
+r(124,14,36,2,'k'); r(127,16,2,3,3); r(155,16,2,3,3);
+[[126,3,9,3],[129,2,7,'o'],[131,3,10,'k'],[134,2,8,0],[136,3,9,2],[139,2,6,'y'],[141,3,8,3]].forEach(([a,w,h,c])=>r(a,14-h,w,h,c));
+r(133,6,1,6,'o'); r(137,7,1,5,0);
+r(149,10,6,4,'o'); r(148,9,8,1,'o'); r(151,4,2,5,3); r(148,5,3,2,3); r(153,2,3,3,3); r(150,1,2,3,3);
+
+/* desk */
+r(46,58,104,3,'k'); r(48,61,100,2,3);
+r(49,63,3,21,'k'); r(144,63,3,21,'k');
+
+/* lamp */
+r(50,56,8,2,'k'); r(53,40,2,16,'k'); r(53,38,8,2,'k');
+r(59,33,9,3,'o'); r(58,36,11,2,'o'); r(60,38,7,1,'y');
+/* mug */
+r(62,53,5,5,0); r(67,54,1,3,0); r(62,57,5,1,2); r(63,49,1,3,2); r(65,47,1,3,2);
+
+/* main monitor */
+r(72,20,50,32,'k'); r(74,22,46,28,3);
+r(94,52,6,4,'k'); r(88,56,18,2,'k');
+[[0,9,'o'],[2,14,0],[2,8,0,11,7,'y'],[4,13,1],[4,6,0,7,9,'o'],[4,10,0],[2,3,'o'],[0,2,0],[0,0,0],[0,11,'y'],[2,17,0],[2,9,1],[0,2,0]].forEach((L,i)=>{
+  const y=24+i*2; r(76+L[0],y,L[1],1,L[2]); if(L.length>3) r(76+L[0]+L[3],y,L[4],1,L[5]);
+});
+[[24,6,1],[26,9,0],[26,5,'y'],[24,8,1],[26,6,0],[26,10,'o'],[24,4,1],[26,7,0],[26,9,0],[24,5,1],[26,6,'y'],[26,8,0]].forEach((L,i)=>r(76+L[0]+(i%3?2:0),24+i*2,L[1],1,L[2]));
+
+/* second monitor (terminal) */
+r(126,24,18,30,'k'); r(128,26,14,26,3);
+r(133,54,4,3,'k'); r(130,57,10,1,'k');
+[[5,'y'],[9,0],[7,0],[10,1],[4,0],[8,'o'],[6,0],[9,0],[3,'y'],[7,1],[5,0]].forEach(([w,c],i)=>r(130,28+i*2,w,1,c));
+r(130,50,2,1,0);
+
+/* pc tower */
+r(28,60,13,26,'k'); r(30,62,9,2,3); r(30,66,9,1,3); r(30,68,9,1,3);
+r(31,72,2,2,'y'); r(35,72,2,2,'o'); r(30,77,9,1,3); r(30,79,9,1,3); r(30,81,9,1,3); r(30,83,9,1,3);
+
+/* rug */
+r(66,84,62,8,1); r(64,86,66,4,1); r(68,85,58,1,0); r(68,90,58,1,0);
+
+/* chair + developer (seen from behind) */
+r(95,80,4,5,'k'); r(87,85,20,2,'k'); r(86,87,3,2,'k'); r(96,87,3,2,'k'); r(105,87,3,2,'k');
+/* arms */
+r(78,54,8,5,'o'); r(108,54,8,5,'o'); r(77,56,2,3,0); r(115,56,2,3,0);
+/* shoulders + hood */
+r(85,51,24,7,'o'); r(87,50,20,1,'o'); r(91,48,12,3,'o'); r(91,50,12,1,'k');
+/* chair back */
+r(84,56,26,24,'k'); r(83,57,28,22,'k'); r(85,58,24,20,3); r(87,60,20,1,2); r(87,75,20,1,2);
+/* head */
+r(90,36,14,13,'k'); r(92,35,10,1,'k'); r(89,38,16,9,'k');
+r(93,37,5,1,3); r(92,38,2,1,3); r(99,39,3,1,3);
+/* headphones */
+r(91,33,12,1,0); r(89,34,3,1,0); r(102,34,3,1,0); r(88,35,2,4,0); r(104,35,2,4,0);
+r(86,39,4,7,'y'); r(104,39,4,7,'y'); r(86,39,4,1,'k'); r(86,45,4,1,'k'); r(104,39,4,1,'k'); r(104,45,4,1,'k');
+
+/* plant */
+r(151,75,11,2,'o'); r(152,77,9,8,'o'); r(152,84,9,1,'k'); r(153,78,1,5,'y');
+[[156,44,31],[153,51,24],[159,53,22],[151,60,15],[161,61,14]].forEach(([a,t,h])=>{r(a,t,2,h,'k'); r(a,t-1,1,1,'k'); r(a,t+2,1,h-4,2)});
+/* cat on the window sill */
+r(13,40,7,6,0); r(14,36,5,4,0); r(14,35,1,1,0); r(18,35,1,1,0); r(20,45,3,1,0); r(22,43,1,2,0); r(14,40,5,1,'o');
+
+</script>
+</body>
+</html>

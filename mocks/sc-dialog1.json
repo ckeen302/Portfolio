@@ -1,0 +1,1 @@
+{"prep": "document.documentElement.dataset.boot='off'", "clip": [100, 470, 900, 330], "every": 4500, "until": 9500, "cols": 3, "settle": 2500}

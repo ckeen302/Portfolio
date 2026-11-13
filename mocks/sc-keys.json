@@ -1,0 +1,3 @@
+{ "prep": "document.documentElement.dataset.boot='off'; document.documentElement.dataset.theme='day';",
+  "steps": [{ "at": 900, "js": "(document.querySelector('.top .chip--icon')||{click(){}}).click()" }],
+  "clip": [1180, 270, 240, 330], "every": 450, "until": 1500, "cols": 4 }

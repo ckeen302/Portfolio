@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Five directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:1800px;height:1330px;background:#111113;color:#f2f2f3;font-family:"Inter Tight",sans-serif;overflow:hidden}
+  h1{margin:0;padding:34px 40px 6px;font:600 34px "Inter Tight";letter-spacing:-.03em}
+  h1 span{color:#8a8a92;font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:26px 22px;padding:20px 40px}
+  figure{margin:0;grid-column:span 2}
+  figure:nth-child(4){grid-column:2 / span 2}
+  img{display:block;width:100%;aspect-ratio:1440/900;border-radius:10px;border:1px solid rgba(255,255,255,.14)}
+  figcaption{display:flex;align-items:baseline;gap:12px;margin-top:12px}
+  figcaption b{font:700 26px "Inter Tight";letter-spacing:-.03em}
+  figcaption i{font:500 12px "JetBrains Mono";font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#ff6a2b}
+  figure p{margin:6px 0 0;font:500 16.5px/1.35 "Inter Tight";color:#a6a6ae;letter-spacing:-.01em}
+</style>
+</head>
+<body>
+<h1>Caden Keen portfolio <span>— five directions. Each is a still of the first screen.</span></h1>
+<div class="grid">
+  <figure><img src="out/1-particle.jpg"><figcaption><i>Option 1</i><b>Particle</b></figcaption><p>Your name built from 40,000 points of light that scatter from the cursor and re-form.</p></figure>
+  <figure><img src="out/2-chrome.jpg"><figcaption><i>Option 2</i><b>Chrome</b></figcaption><p>Huge type and one liquid-metal 3D object you can drag. Cinematic and dark.</p></figure>
+  <figure><img src="out/3-acid.jpg"><figcaption><i>Option 3</i><b>Acid</b></figcaption><p>Loud, bold and flat. Giant type, real screenshots, zero subtlety.</p></figure>
+  <figure><img src="out/4-hud.jpg"><figcaption><i>Option 4</i><b>Mission Control</b></figcaption><p>A sci-fi console. Your projects orbit a wireframe globe you can spin.</p></figure>
+  <figure><img src="out/5-gallery.jpg"><figcaption><i>Option 5</i><b>Gallery</b></figcaption><p>Light, clean and confident. The work is the hero, with smooth motion.</p></figure>
+</div>
+</body>
+</html>

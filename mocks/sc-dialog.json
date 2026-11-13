@@ -1,0 +1,7 @@
+{ "prep": "document.documentElement.dataset.boot='off'; window.__d = () => document.querySelector('[aria-label$=\"next line.\"]').click();",
+  "steps": [
+    { "at": 200, "js": "__d()" }, { "at": 500, "js": "__d()" },
+    { "at": 800, "js": "__d()" }, { "at": 1100, "js": "__d()" },
+    { "at": 1400, "js": "__d()" }, { "at": 1700, "js": "__d()" }
+  ],
+  "clip": [0, 560, 1440, 340], "every": 1000, "until": 2900, "cols": 1, "scale": 1 }

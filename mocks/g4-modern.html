@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>G4 — Modern console menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c11;--pan:#141821;--line:rgba(255,255,255,.14);--tx:#f3f5f8;--dim:#9aa3b2;--ac:#c9ff35;--ink:#0a0c11}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{position:relative;background:var(--bg);color:var(--tx);font-family:"Chakra Petch",sans-serif}
+.d{font-family:"Archivo",sans-serif;font-stretch:125%;font-style:italic;font-weight:900;text-transform:uppercase}
+
+/* ---------- background panels ---------- */
+.bg{position:absolute;inset:0;overflow:hidden}
+.bg .p1{position:absolute;left:560px;top:-80px;width:1100px;height:1100px;background:linear-gradient(180deg,#171c27,#10141c);transform:skewX(-14deg);transform-origin:0 100%}
+.bg .p2{position:absolute;left:532px;top:-80px;width:10px;height:1100px;background:var(--ac);transform:skewX(-14deg);transform-origin:0 100%}
+.bg .p3{position:absolute;left:500px;top:-80px;width:14px;height:1100px;background:rgba(255,255,255,.06);transform:skewX(-14deg);transform-origin:0 100%}
+.bg .dots{position:absolute;left:0;top:0;width:560px;height:900px;background:radial-gradient(rgba(255,255,255,.09) 1.2px,transparent 1.6px) 0 0/22px 22px;-webkit-mask-image:linear-gradient(120deg,#000 0,transparent 70%);mask-image:linear-gradient(120deg,#000 0,transparent 70%)}
+.bg .big{position:absolute;right:-30px;top:-74px;font-size:420px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);letter-spacing:-10px}
+.bg .hatch{position:absolute;right:0;bottom:64px;width:340px;height:120px;background:repeating-linear-gradient(-66deg,rgba(201,255,53,.5) 0 3px,transparent 3px 14px);-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000);opacity:.35}
+
+/* ---------- left column ---------- */
+.kicker{position:absolute;left:72px;top:54px;display:flex;align-items:center;gap:14px;font-weight:600;font-size:15px;letter-spacing:.32em;color:var(--dim);text-transform:uppercase}
+.kicker i{width:12px;height:12px;background:var(--ac);transform:skewX(-14deg)}
+h1{position:absolute;left:66px;top:86px;font-size:132px;line-height:.86;letter-spacing:-.035em}
+.role{position:absolute;left:72px;top:330px;height:46px;padding:0 26px 0 22px;display:flex;align-items:center;font-size:23px;letter-spacing:.07em;color:var(--ink);font-weight:800;isolation:isolate}
+.role::before{content:"";position:absolute;inset:0;background:var(--ac);transform:skewX(-14deg);z-index:-1}
+.facts{position:absolute;left:72px;top:396px;font-size:18px;line-height:1.5;color:#c6ccd8;font-weight:500}
+.facts b{color:var(--tx);font-weight:600}
+
+.menu{position:absolute;left:72px;top:478px;width:470px;list-style:none}
+.menu li{position:relative;height:62px;display:flex;align-items:center;gap:22px;padding-left:20px;font-size:40px;letter-spacing:-.01em;color:#aab2c0;isolation:isolate;font-weight:800}
+.menu li small{font-family:"Chakra Petch";font-style:normal;font-weight:600;font-size:15px;letter-spacing:.14em;width:26px;color:#6f7888;font-stretch:100%}
+.menu li.sel{color:var(--ink);font-weight:900}
+.menu li.sel small{color:rgba(10,12,17,.65)}
+.menu li.sel::before{content:"";position:absolute;inset:2px -24px 2px -6px;background:var(--ac);transform:skewX(-14deg);z-index:-1;box-shadow:10px 8px 0 rgba(201,255,53,.18)}
+.menu li.sel::after{content:"";margin-left:auto;margin-right:4px;width:38px;height:22px;background:
+  linear-gradient(var(--ink),var(--ink)) 0 50%/26px 4px no-repeat;
+  clip-path:none}
+.menu li.sel .arr{position:absolute;right:-2px;top:20px;width:16px;height:16px;border-top:4px solid var(--ink);border-right:4px solid var(--ink);transform:rotate(45deg) skew(8deg,8deg)}
+
+/* ---------- right: project card ---------- */
+.pager{position:absolute;left:800px;right:60px;top:54px;display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px;letter-spacing:.32em;color:var(--dim);text-transform:uppercase}
+.pager b{color:var(--tx);font-weight:700}
+.pager .sp{flex:1;height:2px;background:var(--line)}
+.bump{display:inline-grid;place-items:center;width:44px;height:26px;border:2px solid rgba(255,255,255,.55);border-radius:8px 8px 4px 4px;font-size:13px;letter-spacing:.04em;color:var(--tx);font-weight:700}
+.pager .nx{letter-spacing:.12em;color:#c6ccd8;text-transform:none;font-size:16px}
+
+.shot-ac{position:absolute;left:626px;top:112px;width:760px;height:440px;background:var(--ac);clip-path:polygon(72px 0,100% 0,calc(100% - 72px) 100%,0 100%)}
+.shot{position:absolute;left:646px;top:96px;width:760px;height:440px;clip-path:polygon(72px 0,100% 0,calc(100% - 72px) 100%,0 100%);background:#000}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.shot::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,17,0) 55%,rgba(10,12,17,.55) 100%)}
+.badge{position:absolute;left:726px;top:114px;height:34px;padding:0 18px;display:flex;align-items:center;font-size:14px;letter-spacing:.2em;font-weight:700;color:var(--ink);isolation:isolate}
+.badge::before{content:"";position:absolute;inset:0;background:var(--tx);transform:skewX(-14deg);z-index:-1}
+
+.ptitle{position:absolute;left:642px;top:572px;font-size:78px;line-height:1;letter-spacing:-.03em;text-transform:none}
+.pinfo{position:absolute;left:1004px;top:582px;width:388px;padding-left:18px;border-left:3px solid var(--ac)}
+.psub{font-size:20px;line-height:1.2;white-space:nowrap;font-weight:600;color:var(--ac);letter-spacing:.02em}
+.pdesc{margin-top:8px;font-size:16px;line-height:1.35;white-space:nowrap;color:#c6ccd8;font-weight:500}
+.tiles{position:absolute;left:642px;top:690px;display:flex;gap:16px}
+.tile{position:relative;width:156px;height:104px;padding:18px 0 0 24px;isolation:isolate}
+.tile::before{content:"";position:absolute;inset:0;background:#1b212d;border:2px solid rgba(255,255,255,.16);transform:skewX(-14deg);z-index:-1}
+.tile b{display:block;font-size:30px;line-height:1;letter-spacing:-.02em}
+.tile span{display:block;margin-top:9px;font-size:12.5px;letter-spacing:.14em;color:var(--dim);font-weight:600;text-transform:uppercase;line-height:1.25}
+.cta{position:absolute;left:1176px;top:690px;display:flex;flex-direction:column;gap:12px;align-items:stretch;width:208px}
+.btn{position:relative;height:46px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:17px;white-space:nowrap;letter-spacing:.05em;isolation:isolate;font-weight:800}
+.btn::before{content:"";position:absolute;inset:0;transform:skewX(-14deg);z-index:-1}
+.btn.a{color:var(--ink)}.btn.a::before{background:var(--tx)}
+.btn.b::before{border:2px solid rgba(255,255,255,.6)}
+
+/* ---------- bottom prompt bar ---------- */
+.bar{position:absolute;left:0;right:0;bottom:0;height:64px;background:rgba(6,7,10,.92);border-top:2px solid var(--line);display:flex;align-items:center;padding:0 60px 0 72px;gap:34px;font-size:17px;font-weight:600;letter-spacing:.04em}
+.bar .k{display:flex;align-items:center;gap:11px;color:#dfe3ea}
+.gl{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:"Archivo";font-weight:800;font-size:15px;font-style:normal;letter-spacing:0}
+.gl.a{background:var(--ac);color:var(--ink)}
+.gl.o{border:2px solid rgba(255,255,255,.75);color:var(--tx)}
+.dpad{position:relative;width:30px;height:30px}
+.dpad::before,.dpad::after{content:"";position:absolute;background:rgba(255,255,255,.8);border-radius:2px}
+.dpad::before{left:10px;top:0;width:10px;height:30px}.dpad::after{left:0;top:10px;width:30px;height:10px}
+.bar .sp{flex:1}
+.bar .st{display:flex;align-items:center;gap:10px;color:var(--tx);letter-spacing:.14em;text-transform:uppercase;font-size:15px}
+.bar .st i{width:10px;height:10px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px rgba(201,255,53,.2)}
+.bar .loc{color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-size:15px}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="p1"></div><div class="p3"></div><div class="p2"></div>
+  <div class="dots"></div>
+  <div class="big d">02</div>
+  <div class="hatch"></div>
+</div>
+
+<!-- left -->
+<div class="kicker"><i></i>Main menu</div>
+<h1 class="d">Caden<br>Keen</h1>
+<div class="role d">Software Engineer</div>
+<p class="facts"><b>Computer Science senior</b>, University of Delaware<br>Graduating May 2027</p>
+
+<ul class="menu d">
+  <li class="sel"><small>01</small>Work<span class="arr"></span></li>
+  <li><small>02</small>Experience</li>
+  <li><small>03</small>About</li>
+  <li><small>04</small>Contact</li>
+  <li><small>05</small>Résumé</li>
+</ul>
+
+<!-- right -->
+<div class="pager"><span>Work</span><b>02 / 02</b><span class="sp"></span><span class="bump">L</span><span class="nx">ChordCraft</span><span class="bump">R</span></div>
+<div class="shot-ac"></div>
+<div class="shot"><img src="../public/work/pokeiq/home.webp" alt=""></div>
+<div class="badge">PROJECT</div>
+
+<div class="ptitle d">PokéIQ</div>
+<div class="pinfo">
+  <div class="psub">Multiplayer Pokémon Game Platform</div>
+  <div class="pdesc">Real-time PvP and matchmaking across 4 modes.</div>
+</div>
+<div class="tiles">
+  <div class="tile"><b class="d">4</b><span>Modes</span></div>
+  <div class="tile"><b class="d">500+</b><span>CI<br>tests</span></div>
+  <div class="tile"><b class="d">2,000+</b><span>Processed<br>screenshots</span></div>
+</div>
+<div class="cta">
+  <a class="btn a d">View project</a>
+  <a class="btn b d">Résumé</a>
+</div>
+
+<!-- prompts -->
+<div class="bar">
+  <span class="k"><i class="dpad"></i>Navigate</span>
+  <span class="k"><i class="gl a">A</i>Select</span>
+  <span class="k"><i class="gl o">B</i>Back</span>
+  <span class="k"><i class="gl o">Y</i>Résumé</span>
+  <span class="sp"></span>
+  <span class="loc">Newark, DE</span>
+  <span class="st"><i></i>Open to work</span>
+</div>
+</body>
+</html>

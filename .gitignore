@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.vercel
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+
+# working files: recordings, the design mock renders, and the old build kept as a backup
+mocks/out
+mocks/rec-*.html
+mission-control-backup.tgz
+.claude

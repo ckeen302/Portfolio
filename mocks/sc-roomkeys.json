@@ -1,0 +1,3 @@
+{ "prep": "document.documentElement.dataset.boot='off'; if (document.documentElement.dataset.theme==='night') (document.querySelector('.top .chip--icon')||{click(){}}).click();",
+  "steps": [{ "at": 600, "js": "(() => { const c=document.querySelector('.scene canvas'); const b=c.getBoundingClientRect(); c.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,clientX:b.left+b.width*157/164,clientY:b.top+b.height*60/96})); })()" }],
+  "clip": [1150, 110, 270, 480], "every": 800, "until": 8600, "cols": 10, "settle": 2500 }
