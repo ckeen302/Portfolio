@@ -102,14 +102,6 @@ const BIRD_TAKES = 3.4;
 const birdAt = (t: number) => (t + 12) % BIRD_EVERY; // seconds into the current crossing
 const STARS = [[13, 15], [21, 20], [36, 14], [17, 29], [31, 33], [37, 25], [28, 40], [20, 36]];
 const LAMP = { x0: 48, x1: 71, y0: 31, y1: 59 };
-// Other things in the room that can be clicked: [left, top, right, bottom], the label shown on hover,
-// and where a click goes (the helmet says its line instead).
-type Thing = "monitor" | "map" | "helmet";
-const THINGS: Record<Thing, { box: [number, number, number, number]; label: string; to?: string; says?: string }> = {
-  map: { box: [49, 4, 67, 28], label: "Contact", to: "contact" },
-  helmet: { box: [126, 45, 144, 58], label: "Commanders", says: "Big Washington Commanders fan" },
-  monitor: { box: [72, 20, 122, 52], label: "Work", to: "work" },
-};
 // The cat curled up asleep on the sill at night, facing us: two ears, eyes shut ("k"), a nose ("o"),
 // its back rising behind its head, and its tail wrapped round in front ("d" is the line that draws it).
 const CAT_ASLEEP = [
@@ -705,7 +697,6 @@ export function Scene() {
       return LOW + Math.floor(k / 7) * 12 + SCALE[k % 7];
     };
     const tip = tipRef.current;
-    let saidUntil = 0;
     const label = (text: string | null, x = 0, y = 0) => {
       if (!tip) return;
       tip.hidden = !text;
@@ -718,7 +709,7 @@ export function Scene() {
       const rect = cv.getBoundingClientRect();
       return [((e.clientX - rect.left) / rect.width) * W, ((e.clientY - rect.top) / rect.height) * H];
     };
-    const hit = (e: PointerEvent): "lamp" | "cat" | "keys" | Thing | null => {
+    const hit = (e: PointerEvent): "lamp" | "cat" | "keys" | null => {
       const rect = cv.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * W;
       const y = ((e.clientY - rect.top) / rect.height) * H;
@@ -728,23 +719,17 @@ export function Scene() {
       }
       if (x >= KEYS - 1 && x <= KEYS + 11 && y >= 37 && y <= 87) return "keys";
       if (x >= LAMP.x0 && x <= LAMP.x1 && y >= LAMP.y0 && y <= LAMP.y1) return "lamp";
-      for (const name of Object.keys(THINGS) as Thing[]) {
-        const [x0, y0, x1, y1] = THINGS[name].box;
-        if (x >= x0 && x <= x1 && y >= y0 && y <= y1) return name;
-      }
       return null;
     };
     const onMove = (e: PointerEvent) => {
       const what = hit(e);
       cv.style.cursor = what ? "pointer" : "";
-      if (performance.now() < saidUntil) return; // the helmet is still saying its line
       if (what === "keys") label("Play", KEYS + 5, 37);
       else if (what === "lamp") label("Day / Night", 62, 32);
-      else if (what && what !== "cat") label(THINGS[what].label, (THINGS[what].box[0] + THINGS[what].box[2]) / 2, Math.max(13, THINGS[what].box[1])); // kept inside the room
       else label(null);
     };
     const onOut = () => {
-      if (performance.now() >= saidUntil) label(null);
+      label(null);
     };
     const onClick = (e: PointerEvent) => {
       const what = hit(e);
@@ -754,17 +739,6 @@ export function Scene() {
         const note = noteAt(...at(e));
         if (note === null) player.toggle();
         else void player.strike(note);
-        return;
-      }
-      if (what === "monitor" || what === "map" || what === "helmet") {
-        const thing = THINGS[what];
-        sfx.select();
-        if (thing.to) document.getElementById(thing.to)?.scrollIntoView();
-        else if (thing.says) {
-          label(thing.says, 116, thing.box[1]); // a long line: moved left so it stays inside the room
-          saidUntil = performance.now() + 2600;
-          window.setTimeout(() => label(null), 2600);
-        }
         return;
       }
       sfx.select();
@@ -824,7 +798,7 @@ export function Scene() {
         width={W}
         height={H}
         role="img"
-        aria-label="Pixel art of a developer at a desk with a monitor, a football helmet, a lamp, a cat on the window sill looking outside, a framed map of Delaware, a MIDI keyboard standing against the wall, and a shelf with books, an icon of Christ and a plant. The window shows the current weather in Newark. Clicking the lamp switches between day and night, the keys of the keyboard play notes, the monitor goes to Work and the map goes to Contact."
+        aria-label="Pixel art of a developer at a desk with a monitor, a football helmet, a lamp, a cat on the window sill looking outside, a framed map of Delaware, a MIDI keyboard standing against the wall, and a shelf with books, an icon of Christ and a plant. The window shows the current weather in Newark. Clicking the lamp switches between day and night and the keys of the keyboard play notes."
       />
       <div className="scene__glow" aria-hidden="true" />
       <span ref={tipRef} className="scene__tip" hidden aria-hidden="true" />
